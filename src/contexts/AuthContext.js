@@ -8,6 +8,7 @@ const initialState = {
 
 const AuthContextProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
+ 
   return (
     <AuthContext.Provider value={{ state }}>{children}</AuthContext.Provider>
   );

@@ -1,25 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
+import SignedInLinks from "./SignedInLinks";
+import SignedOutLinks from "./SignedOutLinks";
+
+import { AuthContext } from "../../contexts/AuthContext"
+
 const NavBar = () => {
+  const {state} =  useContext(AuthContext)
+  const links = state.isAuthenticated ? <SignedInLinks/> : <SignedOutLinks />
+
   return (
     <nav>
       <div className="container nav-wrapper">
         <a href="#" data-target="slide-out" className="sidenav-trigger">
-          <i class="material-icons">menu</i>
+          <i className="material-icons">menu</i>
         </a>
 
         <a href="#" className="brand-logo">
           Logo
         </a>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
-          <li>
-            <a href="sass.html">Sass</a>
-          </li>
-          <li>
-            <a href="badges.html">Components</a>
-          </li>
-          <li>
-            <a href="collapsible.html">JavaScript</a>
-          </li>
+        {links}
         </ul>
       </div>
     </nav>
