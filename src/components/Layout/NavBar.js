@@ -5,8 +5,9 @@ import SignedOutLinks from "./SignedOutLinks";
 import { AuthContext } from "../../contexts/AuthContext"
 
 const NavBar = () => {
-  const {state} =  useContext(AuthContext)
-  const links = state.isAuthenticated ? <SignedInLinks/> : <SignedOutLinks />
+  const {  authState: {isAuthenticated}  } = useContext(AuthContext)
+ 
+  const links = isAuthenticated ? <SignedInLinks/> : <SignedOutLinks />
 
   return (
     <nav>
@@ -19,7 +20,7 @@ const NavBar = () => {
           Logo
         </a>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
-        {links}
+        {links}        
         </ul>
       </div>
     </nav>
