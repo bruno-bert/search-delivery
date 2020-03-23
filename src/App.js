@@ -1,29 +1,31 @@
 import React from "react";
 import { BrowserRouter } from 'react-router-dom'
 import AuthContextProvider from "./contexts/AuthContext" 
+import GlobalContextProvider from "./contexts/GlobalContext" 
+
 import Routes from './Routes'
 
 import Layout from "./components/Layout";
-import "./styles.css";
 
-
+import "./styles/styles.css";
 
 
 
 export default function App() {
   return (
-    <div className="App">
+  
+      <GlobalContextProvider>
+        <AuthContextProvider>
+        <BrowserRouter>
+          <Layout>
+            
+            {/*<Routes />*/}
 
-      <AuthContextProvider>
-      <BrowserRouter>
-        <Layout>
-          
-          <Routes />
 
-        </Layout>
-        </BrowserRouter>
-      </AuthContextProvider>
-     
-    </div>
+          </Layout>
+          </BrowserRouter>
+        </AuthContextProvider>
+      </GlobalContextProvider>
+  
   );
 }

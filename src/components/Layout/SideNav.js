@@ -1,52 +1,69 @@
-import React, { useEffect } from "react";
+import React, {useContext} from "react";
+
+import { GlobalContext } from "../../contexts/GlobalContext"
+
 
 const SideNav = () => {
-  useEffect(() => {
-    window.M.Sidenav.init(document.querySelectorAll(".sidenav"), {});
-  }, []);
+  
+    const {  globalState: {sidebarActive}  } = useContext(GlobalContext)
+
 
   return (
-    <React.Fragment>
-      <ul id="slide-out" className="sidenav">
-        <li>
-          <div className="user-view">
-            <div className="background">
-              <img src="images/office.jpg" alt="bgsidebar" />
-            </div>
-            <a href="#user">
-              <img className="circle" src="images/yuna.jpg" alt="avatar" />
-            </a>
-            <a href="#name">
-              <span className="white-text name">John Doe</span>
-            </a>
-            <a href="#email">
-              <span className="white-text email">jdandturk@gmail.com</span>
-            </a>
-          </div>
+   
+    <nav id="sidebar" className={`${sidebarActive ? 'active' : ''}`}>
+    <div className="sidebar-header">
+        <h3>Busca Delivery</h3>
+    </div>
+
+    <ul className="list-unstyled components">
+        <p>Dummy Heading</p>
+        <li className="active" >
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Home</a>
+            <ul className="collapse list-unstyled" id="homeSubmenu">
+                <li>
+                    <a href="#">Home 1</a>
+                </li>
+                <li>
+                    <a href="#">Home 2</a>
+                </li>
+                <li>
+                    <a href="#">Home 3</a>
+                </li>
+            </ul>
         </li>
         <li>
-          <a href="#!">
-            <i className="material-icons">cloud</i>First Link With Icon
-          </a>
+            <a href="#">About</a>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Pages</a>
+            <ul className="collapse list-unstyled" id="pageSubmenu">
+                <li>
+                    <a href="#">Page 1</a>
+                </li>
+                <li>
+                    <a href="#">Page 2</a>
+                </li>
+                <li>
+                    <a href="#">Page 3</a>
+                </li>
+            </ul>
         </li>
         <li>
-          <a href="#!">Second Link</a>
+            <a href="#">Portfolio</a>
         </li>
         <li>
-          <div className="divider" />
+            <a href="#">Contact</a>
+        </li>
+    </ul>
+
+    <ul className="list-unstyled CTAs">
+        <li>
+            <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" className="download">Download source</a>
         </li>
         <li>
-          <a href="#" className="subheader">
-            Subheader
-          </a>
+            <a href="https://bootstrapious.com/p/bootstrap-sidebar" className="article">Back to article</a>
         </li>
-        <li>
-          <a className="waves-effect" href="#!">
-            Third Link With Waves
-          </a>
-        </li>
-      </ul>
-    </React.Fragment>
+    </ul>
+</nav>
+
   );
 };
 

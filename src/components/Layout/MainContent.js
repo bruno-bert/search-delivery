@@ -1,6 +1,6 @@
 import React from "react";
 
 const MainContent = ({ children }) => {
-  return <main className="container mainContent">{children}</main>;
+  return <main>{children}</main>;
 };
 export default MainContent;

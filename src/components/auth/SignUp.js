@@ -11,6 +11,7 @@ const SignUp = () => {
   const [state, setState] = useState({
     email: '',
     password: '',
+    name: '',
     loading: false
   })
 
@@ -21,7 +22,7 @@ const SignUp = () => {
   const executeSignUp = async (e) =>{
     e.preventDefault()
     setLoadingStatus(true)
-    await signup( { email: state.email, password: state.password } , dispatch)
+    await signup( { email: state.email, password: state.password, name: state.name } , dispatch)
     setLoadingStatus(false)  
   }
 
@@ -39,15 +40,25 @@ const SignUp = () => {
     return (
       <div className="container">
       <form className="white" onSubmit={executeSignUp}>
+        
         <h5 className="grey-text text-darken-3">Sign Up</h5>
+        
         <div className="input-field">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Your Email</label>
           <input type="email" id='email' onChange={handleChange} />
         </div>
+
         <div className="input-field">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="name">Your Name</label>
+          <input type="text" id='name' onChange={handleChange} />
+        </div>
+
+        <div className="input-field">
+          <label htmlFor="password">Inform a Password</label>
           <input type="password" id='password' onChange={handleChange} />
         </div>
+
+
         <div className="input-field">
 
           <button className={`btn pink lighten-1 z-depth-0 ${state.loading ? 'disabled' : ''} `}>Sign Up</button>
