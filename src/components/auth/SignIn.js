@@ -2,8 +2,9 @@ import React, { useContext, useState, useEffect } from "react";
 import { Redirect } from "react-router-dom"
 
 import { AuthContext } from "../../contexts/AuthContext"
-import { login, cleanAuthError } from "../../services/auth"
+import { login, loginWithGoogle, cleanAuthError } from "../../services/auth"
 import ErrorMessage from "../utils/ErrorMessage"
+import LoginButton from "../utils/LoginButton"
 
 const SignIn = () => {
   
@@ -31,6 +32,13 @@ const SignIn = () => {
     setLoadingStatus(false)  
   }
 
+  const executeLoginOnGoogle = async (e)=>{
+    e.preventDefault()
+    setLoadingStatus(true)
+    await loginWithGoogle( dispatch)
+    setLoadingStatus(false)  
+  }
+
   const handleChange = (e) => {
      setState({
        ...state, 
@@ -38,6 +46,7 @@ const SignIn = () => {
     })
   }
 
+  
 
   if (authState.isAuthenticated)
       return (<Redirect to="/" />)
@@ -52,6 +61,21 @@ const SignIn = () => {
                     <div className="card-header">Entrar</div>
                     <div className="card-body">
                         <form onSubmit={executeLogin}>
+
+                        <div className="col-md-8 offset-md-2">
+
+                        <LoginButton 
+                              onClick={executeLoginOnGoogle}
+                              buttonText="Entrar com Google" 
+                              icon="fa fa-google" 
+                              iconSize="30px" buttonType="btn-google"/>
+
+                              
+                              <span style={{display: "block", textAlign: "center", margin: "auto", marginBottom: "20px", marginTop: "20px"}}> 
+                              ---- Ou ----
+                              </span> 
+                          </div>
+
                             <div className="form-group row">
                                 <label htmlFor="email" className="col-md-4 col-form-label text-md-right">E-Mail</label>
                                 <div className="col-md-6">
@@ -66,6 +90,7 @@ const SignIn = () => {
                                 </div>
                             </div>
 
+                            {/*
                             <div className="form-group row">
                                 <div className="col-md-6 offset-md-4">
                                     <div className="checkbox">
@@ -74,12 +99,19 @@ const SignIn = () => {
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*/}
 
-                            <div className="col-md-6 offset-md-4">
-                                <button type="submit" className="btn btn-primary">
-                                    Entrar
-                                </button>
+                          <div className="col-md-8 offset-md-2">
+
+                           
+
+                              <LoginButton 
+                              type="submit"
+                              buttonText="Entrar com Email" 
+                              icon="fa fa-envelope" 
+                              iconSize="20px" buttonType="btn-primary"/>
+                             
+                              
 
                                 {/*
                               <a href="#" className="btn btn-link">
