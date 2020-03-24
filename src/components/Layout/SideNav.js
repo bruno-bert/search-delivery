@@ -1,4 +1,5 @@
 import React, {useContext} from "react";
+import { Link } from "react-router-dom"
 
 import { GlobalContext } from "../../contexts/GlobalContext"
 
@@ -16,12 +17,15 @@ const SideNav = () => {
     </div>
 
     <ul className="list-unstyled components">
-        <p>Dummy Heading</p>
+        <p>Menu</p>
+        {/*
         <li className="active" >
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Home</a>
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Cadastrar Novo</a>
             <ul className="collapse list-unstyled" id="homeSubmenu">
                 <li>
-                    <a href="#">Home 1</a>
+                
+                    <Link className="nav-link" to="/create"></Link>
+                
                 </li>
                 <li>
                     <a href="#">Home 2</a>
@@ -29,7 +33,7 @@ const SideNav = () => {
                 <li>
                     <a href="#">Home 3</a>
                 </li>
-            </ul>
+           </ul>
         </li>
         <li>
             <a href="#">About</a>
@@ -45,15 +49,16 @@ const SideNav = () => {
                     <a href="#">Page 3</a>
                 </li>
             </ul>
+        </li>*/}
+        <li className="active">
+            <Link to="/">Buscar</Link>
         </li>
         <li>
-            <a href="#">Portfolio</a>
-        </li>
-        <li>
-            <a href="#">Contact</a>
+            <Link to="/create">Novo Delivery</Link>
         </li>
     </ul>
 
+    {/*
     <ul className="list-unstyled CTAs">
         <li>
             <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" className="download">Download source</a>
@@ -61,7 +66,7 @@ const SideNav = () => {
         <li>
             <a href="https://bootstrapious.com/p/bootstrap-sidebar" className="article">Back to article</a>
         </li>
-    </ul>
+    </ul>*/}
 </nav>
 
   );

@@ -1,11 +1,19 @@
 import React from "react"
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 const SignedInLinks = () => {
  return (
    <>
     
-    <NavLink className="nav-item nav-link" to="/signout">Sign Out</NavLink>
-    <NavLink className="nav-item nav-link" to="project">Create Project</NavLink>
+    <li className="nav-item active">
+                    <Link className="nav-link" to="/">Buscar</Link>
+                </li>
+
+                <li className="nav-item">
+                    <Link className="nav-link" to="/signout">Sair</Link>
+                </li>
+
+             
+
     
   </>
  
