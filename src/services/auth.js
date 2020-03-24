@@ -10,6 +10,11 @@ export const listenAuthenticationChanges = (dispatch)=>{
     })
 }
 
+export const cleanAuthError = (dispatch) => {
+    dispatch({type: AuthActions.CLEAR_ERROR, payload: { authError: null } })    
+}
+
+
 export const login = async ( { email, password }, dispatch) => {
     const user = await firebase.auth().signInWithEmailAndPassword(email, password)
     .then( response => {
