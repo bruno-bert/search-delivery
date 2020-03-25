@@ -5,6 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext"
 import { signup, cleanAuthError } from "../../services/auth"
 
 import ErrorMessage from "../utils/ErrorMessage"
+import LoginButton from "../utils/LoginButton"
 
 
 const SignUp = () => {
@@ -14,6 +15,7 @@ const SignUp = () => {
   const [state, setState] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
     name: '',
     loading: false
   })
@@ -29,7 +31,7 @@ const SignUp = () => {
   const executeSignUp = async (e) =>{
     e.preventDefault()
     setLoadingStatus(true)
-    await signup( { email: state.email, password: state.password, name: state.name } , dispatch)
+    await signup( { email: state.email, password: state.password, confirmPassword: state.confirmPassword, name: state.name } , dispatch)
     setLoadingStatus(false)  
   }
 
@@ -67,18 +69,27 @@ const SignUp = () => {
                           </div>
 
                           <div className="form-group row">
+                              <label htmlFor="confirmPassword" className="col-md-4 col-form-label text-md-right">Confirmar Senha</label>
+                              <div className="col-md-6">
+                                  <input type="password" id="confirmPassword" className="form-control" name="confirmPassword" required onChange={handleChange} />
+                              </div>
+                          </div>
+
+                          <div className="form-group row">
                               <label htmlFor="password" className="col-md-4 col-form-label text-md-right">Nome Completo (opcional)</label>
                               <div className="col-md-6">
-                                  <input type="text" id="name" className="form-control" name="name" required onChange={handleChange} />
+                                  <input type="text" id="name" className="form-control" name="name" onChange={handleChange} />
                               </div>
                           </div>
 
                         
 
                           <div className="col-md-6 offset-md-4">
-                              <button type="submit" className="btn btn-primary">
-                                  Confirmar
-                              </button>
+                          <LoginButton 
+                              type="submit"
+                              buttonText="Confirmar Registro" 
+                              icon="fa fa-check" 
+                              iconSize="20px" buttonType="btn-primary"/>
                           </div>
 
 

@@ -37,6 +37,8 @@ main {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
+  margin-left: 3rem;
+  margin-right: 3rem;
 }
 
 /** Layout **/
