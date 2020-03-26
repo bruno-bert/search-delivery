@@ -18,6 +18,7 @@ const SignIn = () => {
 
   useEffect( () =>{
     cleanAuthError(dispatch)
+    //eslint-disable-next-line
   }, [])
 
  

@@ -1,7 +1,10 @@
 import React, {useContext} from "react";
 import { AuthContext} from "../contexts/AuthContext"
 import SearchBar from "./SearchBar"
-const DashBoard = () => {
+import ShopList from "./ShopList"
+import ShopsContextProvider from "../contexts/ShopsContext"
+
+const Home = () => {
 
   const { authState: { user }  } = useContext(AuthContext)
  
@@ -9,10 +12,14 @@ const DashBoard = () => {
     <>
     <h1>Seja Bem-Vindo {user.displayName} ! </h1>
 
-    // TODO add the search bar here
-    <SearchBar />
+   
+   <ShopsContextProvider >
+     <SearchBar />
+     <ShopList />
+   </ShopsContextProvider>
+    
     </>
   );
 };
 
-export default DashBoard;
+export default Home;

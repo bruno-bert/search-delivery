@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 
-import DashBoard from './components/DashBoard'
+import Home from './components/Home'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import SignOut from './components/auth/SignOut'
@@ -34,7 +34,7 @@ const ProtectedRoute = ({component: Component, ...rest})=>{
 const Routes = () => (
 
       <Switch>
-            <ProtectedRoute exact path='/'component={DashBoard} />
+            <ProtectedRoute exact path='/'component={Home} />
             <ProtectedRoute path='/create' component={CreateDelivery} />
             <ProtectedRoute path='/signout' component={SignOut} />
             <Route path='/signin' component={SignIn} />

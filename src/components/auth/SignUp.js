@@ -22,6 +22,7 @@ const SignUp = () => {
 
   useEffect( () =>{
     cleanAuthError(dispatch)
+    //eslint-disable-next-line
   }, [])
 
   const setLoadingStatus = (status) => {

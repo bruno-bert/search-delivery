@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer } from "react";
 
 export const GlobalActions = {
   TOGGLE_SIDEBAR : "TOGGLE_SIDEBAR"

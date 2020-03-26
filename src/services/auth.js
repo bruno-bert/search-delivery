@@ -41,7 +41,7 @@ export const login = async ( { email, password }, dispatch) => {
 
 
 export const loginWithGoogle = async ( dispatch) => {
-    console.log('dispatching google')
+ 
     const user = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
     .then( response => {
         
@@ -56,7 +56,6 @@ export const loginWithGoogle = async ( dispatch) => {
         dispatch({type: AuthActions.SIGNIN, payload: { user: response.user } })
     })
     .catch(err => {
-        console.log('err', err)
         dispatch({type: AuthActions.AUTH_ERROR, payload: { authError: err.message } })  
         console.log(err.message);
         return err;
