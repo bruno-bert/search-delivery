@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
         <MainContent>
           <NavBar />
           
-          <div className="container main-content">
+          <div className="flex-grow-1 d-flex flex-column overflow-auto" >
            {children}
           </div>
           

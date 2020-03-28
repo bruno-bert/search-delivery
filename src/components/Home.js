@@ -1,21 +1,21 @@
-import React, {useContext} from "react";
-import { AuthContext} from "../contexts/AuthContext"
+import React  from "react";
+//import { AuthContext} from "../contexts/AuthContext"
 import SearchBar from "./SearchBar"
 import ShopList from "./ShopList"
 import ShopsContextProvider from "../contexts/ShopsContext"
 
 const Home = () => {
 
-  const { authState: { user }  } = useContext(AuthContext)
+  //const { authState: { user }  } = useContext(AuthContext)
  
   return (
     <>
-    <h1>Seja Bem-Vindo {user.displayName} ! </h1>
-
-   
+    
    <ShopsContextProvider >
+   <div className="mx-5">
      <SearchBar />
      <ShopList />
+     </div>
    </ShopsContextProvider>
     
     </>
