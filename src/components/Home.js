@@ -7,7 +7,8 @@ import ShopsContextProvider from "../contexts/ShopsContext"
 const Home = () => {
 
   //const { authState: { user }  } = useContext(AuthContext)
- 
+
+
   return (
     <>
     

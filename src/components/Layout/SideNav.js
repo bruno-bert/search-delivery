@@ -9,7 +9,7 @@ const SideNav = () => {
     const {  globalState: {sidebarActive}  } = useContext(GlobalContext)
 
 
-  return (
+    return (
    
     <nav id="sidebar" className={`${sidebarActive ? 'active' : ''}`}>
     <div className="sidebar-header">

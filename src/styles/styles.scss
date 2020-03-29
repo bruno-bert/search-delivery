@@ -4,6 +4,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
+    overflow: hidden;
 
     p {
         font-family: 'Poppins', sans-serif;
@@ -15,8 +16,9 @@ body {
    
 }
 
-
-
+main {
+    overflow: hidden;
+}
   
 
 
