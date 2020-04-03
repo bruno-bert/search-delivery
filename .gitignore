@@ -4,6 +4,14 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn-error.log*
+firebase-debug.log*
+
+# Firebase cache
+.firebase/
+
+functions/serviceAccountKey.json
+serviceAccountKey.json
 
 # Runtime data
 pids
@@ -33,6 +41,7 @@ bower_components
 build/Release
 
 # Dependency directories
+functions/node_modules/
 node_modules/
 jspm_packages/
 

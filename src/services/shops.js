@@ -6,7 +6,7 @@ import { convertMoneyToDisplay } from "../utils";
 const COLLECTION_NAME = "shops";
 
 export const SHOPS_CONFIG = {
-  PAGINATION_SIZE: 10
+  PAGINATION_SIZE: 20
 };
 
 export const cleanError = dispatch => {
