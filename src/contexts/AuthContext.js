@@ -1,8 +1,8 @@
-import React, { createContext, useReducer, useEffect } from "react";
-import { firebaseAuth } from "../reducers/authReducer"
-import { listenAuthenticationChanges } from "../services/auth"
+import React, { createContext, useReducer, useEffect, useContext } from "react";
+import { firebaseAuth } from "../reducers/authReducer";
+import { listenAuthenticationChanges } from "../services/auth";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 const initialState = {
   user: null,
@@ -11,15 +11,19 @@ const initialState = {
 };
 
 const AuthContextProvider = ({ children }) => {
-  
-  
   const [state, dispatch] = useReducer(firebaseAuth, initialState);
 
-  useEffect(() => listenAuthenticationChanges(dispatch), [])
-  
-   return (
-    <AuthContext.Provider value={{ authState: state, dispatch }}>{children}</AuthContext.Provider>
+  useEffect(() => listenAuthenticationChanges(dispatch), []);
+
+  return (
+    <AuthContext.Provider value={{ authState: state, dispatch }}>
+      {children}
+    </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
 
 export default AuthContextProvider;

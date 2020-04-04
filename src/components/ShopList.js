@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Shop from "./Shop";
 import { getShops } from "../services/shops";
-import { ShopsContext } from "../contexts/ShopsContext";
+import { useShops } from "../contexts/ShopsContext";
 import ErrorMessage from "./utils/ErrorMessage";
 import Loading from "./utils/Loading";
 
@@ -15,7 +15,7 @@ const ShopList = () => {
   const {
     shopState: { error, lastDoc, shops, empty },
     dispatch
-  } = useContext(ShopsContext);
+  } = useShops();
 
   const setIsPending = status => {
     setState({ ...state, isPending: status });

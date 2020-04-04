@@ -1,7 +1,7 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useContext } from "react";
 import { shopReducer } from "../reducers/shopReducer";
 
-export const ShopsContext = createContext();
+const ShopsContext = createContext();
 
 const initialState = {
   shops: [],
@@ -20,3 +20,7 @@ const ShopsContextProvider = ({ children }) => {
 };
 
 export default ShopsContextProvider;
+
+export const useShops = () => {
+  return useContext(ShopsContext);
+};

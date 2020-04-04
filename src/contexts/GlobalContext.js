@@ -1,10 +1,10 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useContext } from "react";
 
 export const GlobalActions = {
   TOGGLE_SIDEBAR: "TOGGLE_SIDEBAR"
 };
 
-export const GlobalContext = createContext();
+const GlobalContext = createContext();
 
 const initialState = {
   sidebarActive: false
@@ -33,3 +33,7 @@ const GlobalContextProvider = ({ children }) => {
 };
 
 export default GlobalContextProvider;
+
+export const useGlobalState = () => {
+  return useContext(GlobalContext);
+};

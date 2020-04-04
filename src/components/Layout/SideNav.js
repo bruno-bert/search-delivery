@@ -1,23 +1,23 @@
-import React, {useContext} from "react";
-import { Link } from "react-router-dom"
+import React from "react";
+import { Link } from "react-router-dom";
 
-import { GlobalContext } from "../../contexts/GlobalContext"
-
+import { useGlobalState } from "../../contexts/GlobalContext";
 
 const SideNav = () => {
-  
-    const {  globalState: {sidebarActive}  } = useContext(GlobalContext)
+  const {
+    globalState: { sidebarActive }
+  } = useGlobalState();
 
+  return (
+    <nav id="sidebar" className={`${sidebarActive ? "active" : ""}`}>
+      <div className="sidebar-header p-3">
+        <h3 className="text-white">Busca Delivery</h3>
+      </div>
 
-    return (
-   
-    <nav id="sidebar" className={`${sidebarActive ? 'active' : ''}`}>
-    <div className="sidebar-header">
-        <h3>Busca Delivery</h3>
-    </div>
-
-    <ul className="list-unstyled components">
-        <p>Menu</p>
+      <ul className="list-unstyled components px-0 py-4">
+        <p className="lead text-white font-weight-bold p-3 text-center text-uppercase">
+          Menu
+        </p>
         {/*
         <li className="active" >
             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Cadastrar Novo</a>
@@ -51,14 +51,26 @@ const SideNav = () => {
             </ul>
         </li>*/}
         <li className="active">
-            <Link to="/">Buscar</Link>
+          <Link to="/">Buscar</Link>
         </li>
         <li>
-            <Link to="/create">Novo Delivery</Link>
+          <Link to="/create">Novo Delivery</Link>
         </li>
-    </ul>
 
-    {/*
+        <li>
+          <Link to="/create">Novo Delivery</Link>
+        </li>
+
+        <li>
+          <Link to="/create">Novo Delivery</Link>
+        </li>
+
+        <li>
+          <Link to="/create">Novo Delivery</Link>
+        </li>
+      </ul>
+
+      {/*
     <ul className="list-unstyled CTAs">
         <li>
             <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" className="download">Download source</a>
@@ -67,8 +79,7 @@ const SideNav = () => {
             <a href="https://bootstrapious.com/p/bootstrap-sidebar" className="article">Back to article</a>
         </li>
     </ul>*/}
-</nav>
-
+    </nav>
   );
 };
 

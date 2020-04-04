@@ -1,53 +1,17 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
+//@import url("http://fonts.googleapis.com/css?family=#{$family}");
 
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #fafafa;
-    overflow: hidden;
-
-    p {
-        font-family: 'Poppins', sans-serif;
-        font-size: 1.1em;
-        font-weight: 300;
-        color: #999;
-    }
-
-   
-}
-
-main {
-    overflow: hidden;
-}
-  
-
-
-.wrapper {
-
-    display: flex;
-    width: 100%;
-    height: 100vh;   
-
-
-}
-
-  
-
+@import "../../node_modules/bootswatch/dist/minty/variables";
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "../../node_modules/bootswatch/dist/minty/bootswatch";
 
 /** Layout **/
-@import 'sidebar';
-@import 'navbar';
+@import "sidebar";
+@import "navbar";
 
-
-/** Auth Components */
-@import 'login';
+/** Components */
+@import "shop-card";
 
 /** Utils */
 @import "social-media";
 
-@import "search-bar";
-
-@import "shop-card";
-
-@import 'medias';
-
+@import "medias";
