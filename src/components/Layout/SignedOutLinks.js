@@ -1,19 +1,21 @@
-import React from "react"
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 const SignedOutLinks = () => {
- return (
-   <>
-  
-  
-                <li className="nav-item">
-                  <Link className="nav-item nav-link" to="/signin">Entrar</Link>
-                  </li>
-                  <li className="nav-item">
-                  <Link className="nav-item nav-link" to="/signup">Registrar-se</Link>
-                  </li>
-  </>
- 
- )
-}
+  return (
+    <>
+      <Link className="nav-link" to="/signin">
+        <button type="button" className="btn btn-primary btn-lg">
+          Entrar
+        </button>
+      </Link>
 
-export default SignedOutLinks
+      <Link className="nav-link " to="/signup">
+        <button type="button" className="btn btn-light btn-lg">
+          Registrar-se
+        </button>
+      </Link>
+    </>
+  );
+};
+
+export default SignedOutLinks;

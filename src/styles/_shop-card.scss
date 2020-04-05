@@ -1,19 +1,13 @@
+.card {
+  cursor: pointer;
+  background-color: transparent !important;
 
-    .card {
-        cursor: pointer ;
-        background-color: transparent !important;
-        
-        &:hover{
-          border: 1px solid #ddd !important;
-          background-color: white !important;
-        }
+  &:hover {
+    border: 1px solid #ddd !important;
+    background-color: lighten($secondary, 60%) !important;
+  }
+}
 
-       
-    }
-
-    .card-text{
-            font-size: 0.9rem !important;
-    }
-  
-    
-
+.card-text {
+  font-size: 0.9rem !important;
+}

@@ -5,11 +5,11 @@ import { useGlobalState } from "../../contexts/GlobalContext";
 
 const SideNav = () => {
   const {
-    globalState: { sidebarActive }
+    globalState: { sidebarHidden }
   } = useGlobalState();
 
   return (
-    <nav id="sidebar" className={`${sidebarActive ? "active" : ""}`}>
+    <nav id="sidebar" className={`${sidebarHidden ? "active" : ""}`}>
       <div className="sidebar-header p-3">
         <h3 className="text-white">Busca Delivery</h3>
       </div>
@@ -52,17 +52,6 @@ const SideNav = () => {
         </li>*/}
         <li className="active">
           <Link to="/">Buscar</Link>
-        </li>
-        <li>
-          <Link to="/create">Novo Delivery</Link>
-        </li>
-
-        <li>
-          <Link to="/create">Novo Delivery</Link>
-        </li>
-
-        <li>
-          <Link to="/create">Novo Delivery</Link>
         </li>
 
         <li>

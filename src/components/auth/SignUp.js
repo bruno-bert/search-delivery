@@ -54,8 +54,8 @@ const SignUp = () => {
   if (authState.isAuthenticated) return <Redirect to="/" />;
   else
     return (
-      <div className="login-form container">
-        <div className="row justify-content-center">
+      <div className="login-form container  py-0">
+        <div className="row justify-content-center mx-0">
           <div className="col-md-8">
             <div className="card">
               <div className="card-header">Registrar Novo Usuário</div>

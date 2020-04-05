@@ -3,17 +3,11 @@ import { Link } from "react-router-dom";
 const SignedInLinks = () => {
   return (
     <>
-      <li className="nav-item active">
-        <Link className="nav-link" to="/">
-          Buscar
-        </Link>
-      </li>
-
-      <li className="nav-item">
+      <button type="button" className="btn btn-light">
         <Link className="nav-link" to="/signout">
           Sair
         </Link>
-      </li>
+      </button>
     </>
   );
 };

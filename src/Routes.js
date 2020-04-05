@@ -33,7 +33,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 
 const Routes = () => (
   <Switch>
-    <ProtectedRoute exact path="/" component={Home} />
+    <Route exact path="/" component={Home} />
     <ProtectedRoute path="/create" component={CreateDelivery} />
     <ProtectedRoute path="/signout" component={SignOut} />
     <Route path="/signin" component={SignIn} />

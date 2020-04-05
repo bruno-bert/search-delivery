@@ -4,6 +4,7 @@ import { getShops } from "../services/shops";
 import { useShops } from "../contexts/ShopsContext";
 import ErrorMessage from "./utils/ErrorMessage";
 import Loading from "./utils/Loading";
+import CreateShop from "./CreateShop";
 
 const ShopList = () => {
   const [state, setState] = useState({
@@ -46,6 +47,7 @@ const ShopList = () => {
 
   return (
     <>
+      <CreateShop />
       {error && <ErrorMessage message={error} />}
       {state.isPending && <Loading />}
       {!state.isPending && shops && (

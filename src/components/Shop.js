@@ -26,7 +26,7 @@ const Shop = ({
               />
             </div>
             <div className="col-8">
-              <p className="d-block font-weight-normal text-dark">
+              <p className="d-block font-weight-normal">
                 {name}
                 <span className="float-right text-warning">
                   <i className="fa fa-star text-warning mr-3" />

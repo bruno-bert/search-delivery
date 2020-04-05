@@ -11,7 +11,7 @@ const SearchBar = () => {
         <form className="card card-sm">
           <div className="card-body row no-gutters align-items-center">
             <div className="col-auto  mr-3">
-              <i className="fa fa-search h4 text-body"></i>
+              <i className="fa fa-search fa-2x"></i>
             </div>
 
             <div className="col">

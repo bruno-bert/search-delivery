@@ -7,13 +7,13 @@ export const GlobalActions = {
 const GlobalContext = createContext();
 
 const initialState = {
-  sidebarActive: false
+  sidebarHidden: true
 };
 
 const navigationReducer = (state, action) => {
   switch (action.type) {
     case GlobalActions.TOGGLE_SIDEBAR:
-      return { ...state, sidebarActive: action.payload.sidebarActive };
+      return { ...state, sidebarHidden: action.payload.sidebarHidden };
 
     default:
       return state;

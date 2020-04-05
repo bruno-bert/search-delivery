@@ -48,7 +48,7 @@ const SignIn = () => {
   if (authState.isAuthenticated) return <Redirect to="/" />;
   else
     return (
-      <div className="container py-5">
+      <div className="container py-0">
         <div className="row justify-content-center mx-0">
           <div className="col-md-8">
             <div className="card">

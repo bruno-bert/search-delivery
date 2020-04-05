@@ -1,4 +1,5 @@
 import React from "react";
+import Links from "./Links";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
 
@@ -11,16 +12,20 @@ const NavBar = () => {
   } = useAuth();
 
   const {
-    globalState: { sidebarActive },
+    globalState: { sidebarHidden },
     dispatchGlobalState
   } = useGlobalState();
 
-  const links = isAuthenticated ? <SignedInLinks /> : <SignedOutLinks />;
+  const conditionalLinks = isAuthenticated ? (
+    <SignedInLinks />
+  ) : (
+    <SignedOutLinks />
+  );
 
   const toggleSidebar = () =>
     dispatchGlobalState({
       type: GlobalActions.TOGGLE_SIDEBAR,
-      payload: { sidebarActive: !sidebarActive }
+      payload: { sidebarHidden: !sidebarHidden }
     });
 
   return (
@@ -30,7 +35,7 @@ const NavBar = () => {
           onClick={toggleSidebar}
           type="button"
           id="sidebarCollapse"
-          className={`navbar-btn ${sidebarActive ? "active" : ""}`}
+          className={`navbar-btn ${sidebarHidden ? "active" : ""}`}
         >
           <span></span>
           <span></span>
@@ -49,8 +54,14 @@ const NavBar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav ml-auto">{links}</ul>
+        <div
+          className="collapse navbar-collapse text-center"
+          id="navbarSupportedContent"
+        >
+          <ul className="ml-auto navbar-nav">
+            <Links />
+          </ul>
+          <ul className="navbar-nav ml-auto">{conditionalLinks}</ul>
         </div>
       </div>
     </nav>
