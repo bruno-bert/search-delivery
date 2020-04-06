@@ -20,6 +20,14 @@ Route.post("/register", "AuthController.register");
 Route.post("/authenticate", "AuthController.authenticate");
 Route.get("register/confirm/:token", "AuthController.confirmEmail");
 
+/** Password Reset routes */
+/** this route is sent by client to the backend - the backend will send the reset email with a link to the client and the token */
+Route.post("password-reset/email", "AuthController.sendResetLinkEmail");
+
+/** this route is sent by client in the reset form screen, the client will send to adonis the token to reset the password and the new password */
+Route.post("password-reset/confirm", "AuthController.confirmPasswordReset");
+/** END Password Reset routes */
+
 Route.group(() => {
   Route.get("/cities", "CityController.index");
   Route.post("/city", "CityController.store");
