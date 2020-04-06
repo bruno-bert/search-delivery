@@ -42,6 +42,7 @@ build/Release
 
 # Dependency directories
 functions/node_modules/
+adonis-backend/node_modules/
 node_modules/
 jspm_packages/
 
