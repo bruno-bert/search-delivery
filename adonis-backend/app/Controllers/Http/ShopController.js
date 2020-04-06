@@ -4,7 +4,6 @@ const Shop = use("App/Models/Shop");
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /**
  * Resourceful controller for interacting with shops
@@ -14,13 +13,12 @@ class ShopController {
    * Show a list of all shops.
    * GET shops
    *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
   async index() {
-    const shops = Shop.all();
+    const shops = Shop.query()
+      .with("city")
+      .with("segment")
+      .fetch();
     return shops;
   }
 
@@ -32,18 +30,27 @@ class ShopController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {}
+  async store({ request, auth }) {
+    const data = request.all();
+    const shop = await Shop.create({
+      isNew: true,
+      createdBy: auth.user.id,
+      ...data
+    });
+    return shop;
+  }
 
   /**
    * Display a single shop.
    * GET shops/:id
    *
    * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
+   * @param {object} params
    */
-  async show({ params, request, response, view }) {}
+  async show({ params }) {
+    const shop = await Shop.findOrFail(params.id);
+    return shop;
+  }
 
   /**
    * Update shop details.
@@ -53,7 +60,19 @@ class ShopController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {}
+  async update({ params, request, response }) {
+    const shop = await Shop.findOrFail(params.id);
+    const data = request.all();
+
+    /** do not allow user to update a shop from oher user */
+    if (auth.user.id !== shop.createdBy) {
+      return response.status(401);
+    }
+
+    shop.merge(data);
+    await shop.save();
+    return shop;
+  }
 
   /**
    * Delete a shop with id.
@@ -63,7 +82,19 @@ class ShopController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, request, response }) {}
+  async destroy({ params, request, response }) {
+    const shop = await Shop.findOrFail(id);
+    const copy = { ...shop };
+
+    /** do not allow user to delete a shop from oher user */
+    if (auth.user.id !== shop.createdBy) {
+      return response.status(401);
+    }
+
+    await shop.delete();
+    return copy;
+    // response.status(200).json(result);
+  }
 }
 
 module.exports = ShopController;

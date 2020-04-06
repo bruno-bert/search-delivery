@@ -16,16 +16,26 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
 
+Route.post("/register", "AuthController.register");
+Route.post("/authenticate", "AuthController.authenticate");
+Route.get("register/confirm/:token", "AuthController.confirmEmail");
+
 Route.group(() => {
   Route.get("/cities", "CityController.index");
   Route.post("/city", "CityController.store");
-}).prefix("api/v1");
+})
+  .middleware("auth")
+  .prefix("api/v1");
 
 Route.group(() => {
   Route.get("/segments", "SegmentController.index");
   Route.post("/segment", "SegmentController.store");
-}).prefix("api/v1");
+})
+  .middleware("auth")
+  .prefix("api/v1");
 
 Route.group(() => {
   Route.resource("shops", "ShopController").apiOnly();
-}).prefix("api/v1");
+})
+  .middleware("auth")
+  .prefix("api/v1");
