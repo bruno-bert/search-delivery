@@ -12,6 +12,7 @@
 */
 const providers = [
   "@adonisjs/framework/providers/AppProvider",
+  "@adonisjs/session/providers/SessionProvider",
   "@adonisjs/auth/providers/AuthProvider",
   "@adonisjs/bodyparser/providers/BodyParserProvider",
   "@adonisjs/cors/providers/CorsProvider",

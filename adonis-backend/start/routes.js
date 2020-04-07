@@ -16,8 +16,8 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
 
-Route.post("/register", "AuthController.register");
 Route.post("/authenticate", "AuthController.authenticate");
+Route.post("/register", "AuthController.register");
 Route.get("register/confirm/:token", "AuthController.confirmEmail");
 
 /** Password Reset routes */

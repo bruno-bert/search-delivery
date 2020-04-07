@@ -12,6 +12,21 @@ class AuthController {
     const data = request.only(["email", "password", "name"]);
     const { email, password, name } = data;
 
+    /** checks if user sent a token on login - if yes, returns this user */
+    try {
+      const persistedUser = await auth.getUser();
+      return response.status(200).json({
+        user: {
+          email: persistedUser.email,
+          name: persistedUser.name,
+          isActive: persistedUser.isActive
+        },
+        message: "user already logged in"
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
     const rules = {
       email: "required|email",
       password: "required"
@@ -22,38 +37,14 @@ class AuthController {
       return response.status(400).json({ message: validation.messages() });
     }
 
+    const token = await auth.attempt(email, password);
+
+    /** returns the logged user info + token */
     const user = await User.findBy("email", email);
-    if (!user) {
-      return response.status(400).json({ message: "invalid user" });
-    } else {
-      try {
-        await auth.remember(true).attempt(email, password);
-      } catch (e) {
-        return response.status(400).json({ message: e.message });
-      }
-
-      return response.status(200).json({
-        user: { email, name, isActive: user.isActive },
-        message: "user logged in sucessfully"
-      });
-    }
-  }
-
-  async logout({ auth, response }) {
-    const user = auth.user;
-
-    try {
-      await auth.logout();
-    } catch (e) {
-      return response
-        .status(400)
-        .json({ message: "error on trying to logout: " + e.message });
-    }
-
-    /** returns the logged out user info and a message */
-    return response.status(200).json({
-      user: { email: user.email, name: user.name, isActive: user.isActive },
-      message: "user logged out sucessfully"
+    response.status(200).json({
+      user: { email, name, isActive: user.isActive },
+      token: token.token,
+      message: "user logged in sucessfully"
     });
   }
 
@@ -101,18 +92,15 @@ class AuthController {
       return response.status(400).json({ message: e.message });
     }
 
-    try {
-      await auth.remember(true).attempt(data.email, data.password);
-    } catch (e) {
-      return response.status(400).json({ message: e.message });
-    }
+    const token = await auth.attempt(data.email, data.password);
 
-    return response.status(200).json({
+    response.status(200).json({
       user: {
         name: data.name,
         email: data.email,
         isActive: result.isActive
       },
+      token: token.token,
       message: "user registered sucessfully"
     });
   }
