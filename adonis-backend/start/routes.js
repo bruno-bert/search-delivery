@@ -28,22 +28,22 @@ Route.post("password-reset/email", "AuthController.sendResetLinkEmail");
 Route.post("password-reset/confirm", "AuthController.confirmPasswordReset");
 /** END Password Reset routes */
 
+Route.post("password-change", "AuthController.changePassword").middleware(
+  "auth"
+);
+
+Route.post("logout", "AuthController.logout").middleware("auth");
+
 Route.group(() => {
   Route.get("/cities", "CityController.index");
   Route.post("/city", "CityController.store");
-})
-  .middleware("auth")
-  .prefix("api/v1");
+}).middleware("auth");
 
 Route.group(() => {
   Route.get("/segments", "SegmentController.index");
   Route.post("/segment", "SegmentController.store");
-})
-  .middleware("auth")
-  .prefix("api/v1");
+}).middleware("auth");
 
 Route.group(() => {
   Route.resource("shops", "ShopController").apiOnly();
-})
-  .middleware("auth")
-  .prefix("api/v1");
+}).middleware("auth");

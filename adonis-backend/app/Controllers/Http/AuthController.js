@@ -5,6 +5,7 @@ const { validateAll } = use("Validator");
 const Mail = use("Mail");
 const Env = use("Env");
 const randomString = require("random-string");
+const Hash = use("Hash");
 
 class AuthController {
   async authenticate({ request, auth, response }) {
@@ -19,17 +20,41 @@ class AuthController {
     const validation = await validateAll(data, rules);
 
     if (validation.fails()) {
-      return response.status(400).json(validation.messages());
+      return response.status(400).json({ message: validation.messages() });
     }
 
     const token = await auth.attempt(email, password);
 
     /** returns the logged user info + token */
     const user = await User.findBy("email", email);
-    return { email, name, isActive: user.isActive, token: token.token };
+    response.status(200).json({
+      user: { email, name, isActive: user.isActive },
+      token: token.token,
+      message: "user logged in sucessfully"
+    });
   }
 
-  async register({ request, response, session }) {
+  async logout({ auth, response }) {
+    const user = auth.getUser();
+
+    /** TODO - check how to logout using jwt */
+
+    try {
+      await auth.logout();
+    } catch (e) {
+      return response
+        .status(400)
+        .json({ message: "error on trying to logout: " + e.message });
+    }
+
+    /** returns the logged out user info and a message */
+    response.status(200).json({
+      user: { email: user.email, name: user.name, isActive: user.isActive },
+      message: "user logged out sucessfully"
+    });
+  }
+
+  async register({ request, response, auth }) {
     const data = request.only(["name", "email", "provider", "password"]);
 
     // validate form inputs
@@ -40,7 +65,7 @@ class AuthController {
     const validation = await validateAll(request.all(), rules);
 
     if (validation.fails()) {
-      return response.status(400).json(validation.messages());
+      return response.status(400).json({ message: validation.messages() });
     }
 
     const confirmation_token = randomString({ length: 40 });
@@ -70,14 +95,20 @@ class AuthController {
     } catch (e) {
       const user = await User.findOrFail(result.id);
       user.delete();
-      return response.status(400).json(e.message);
+      return response.status(400).json({ message: e.message });
     }
 
-    return {
-      name: data.name,
-      email: data.email,
-      isActive: result.isActive
-    };
+    const token = await auth.attempt(data.email, data.password);
+
+    response.status(200).json({
+      user: {
+        name: data.name,
+        email: data.email,
+        isActive: result.isActive
+      },
+      token: token.token,
+      message: "user registered sucessfully"
+    });
   }
 
   async sendResetLinkEmail({ request, response }) {
@@ -92,7 +123,7 @@ class AuthController {
     const validation = await validateAll(data, rules);
 
     if (validation.fails()) {
-      return response.status(400).json(validation.messages());
+      return response.status(400).json({ message: validation.messages() });
     }
 
     // get user with the confirmation token
@@ -122,13 +153,15 @@ class AuthController {
           .subject("Busca Delivery - Reset de Senha");
       });
     } catch (e) {
-      return response.status(400).json(e.message);
+      return response.status(400).json({ message: e.message });
     }
 
     return response.status(200).json({
-      name: data.name,
-      email: data.email,
-      message: "Email de reset de senha enviado com sucesso"
+      user: {
+        name: data.name,
+        email: data.email
+      },
+      message: "reset mail sent successfully"
     });
   }
 
@@ -149,7 +182,10 @@ class AuthController {
     // persist user to database
     await user.save();
 
-    response.status(200).json({ message: "Conta confirmada com sucesso" });
+    response.status(200).json({
+      user: { name: user.name, email: user.email, isActive: user.isActive },
+      message: "account confirmed successfully"
+    });
 
     //** TODO - redirecionar para caminho no cliente */
   }
@@ -167,12 +203,12 @@ class AuthController {
     const validation = await validateAll(request.all(), rules);
 
     if (validation.fails()) {
-      return response.status(400).json(validation.messages());
+      return response.status(400).json({ message: validation.messages() });
     }
 
     const userExists = await User.findBy("email", data.email);
     if (!userExists) {
-      return response.status(400).json({ message: "user does not exist" });
+      return response.status(401).json({ message: "user not found" });
     }
 
     // get user with the confirmation token from request body
@@ -187,9 +223,87 @@ class AuthController {
     // persist user to database
     await userWithToken.save();
 
-    response.status(200).json({ message: "Senha resetada com sucesso" });
+    response.status(200).json({
+      user: {
+        name: userWithToken.name,
+        email: userWithToken.email,
+        isActive: userWithToken.isActive
+      },
+      message: "password reset successfully"
+    });
 
     //** TODO - redirecionar para caminho no cliente */
+  }
+
+  async changePassword({ request, response, auth }) {
+    const data = request.only(["email", "password", "old_password"]);
+
+    // validate form inputs
+    const rules = {
+      email: "required|email",
+      password: "required|confirmed|min:6",
+      old_password: "required"
+    };
+
+    const validation = await validateAll(request.all(), rules);
+    if (validation.fails()) {
+      return response.status(400).json({ message: validation.messages() });
+    }
+
+    if (data.old_password === data.password) {
+      return response
+        .status(400)
+        .json({ message: "new password cannot be the same" });
+    }
+
+    try {
+      await auth.attempt(data.email, data.old_password);
+    } catch (e) {
+      return response.status(400).json("login failed");
+    }
+
+    const user = await User.findBy("email", data.email);
+
+    if (!user) {
+      return response.status(401).json({ message: "user not found" });
+    }
+
+    if (!user.isActive) {
+      return response
+        .status(400)
+        .json({ message: "user is not active - cannot change password" });
+    }
+
+    user.merge({ password: data.password, reset_token: null });
+
+    await user.save();
+
+    // send change password email - this mail is only a awareness to user
+    const mailData = {
+      ...user,
+      mail: Env.get("MAIL_SUPPORT")
+    };
+
+    /** TODO: change to job */
+    try {
+      await Mail.send("change_password", mailData, message => {
+        message
+          .from(Env.get("MAIL_FROM"))
+          .to(user.email)
+          .subject("Busca Delivery - Aviso de Troca de Senha");
+      });
+    } catch (e) {
+      return response.status(400).json({ message: e.message });
+    }
+
+    response.status(200).json({
+      user: {
+        name: user.name,
+        email: user.email,
+        isActive: user.isActive
+      },
+      message: "password changed sucessfully"
+    });
   }
 }
 
