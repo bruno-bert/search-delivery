@@ -12,13 +12,27 @@ class AuthController {
     const data = request.only(["email", "password", "name"]);
     const { email, password, name } = data;
 
+    /** checks if user sent a token on login - if yes, returns this user */
+    try {
+      const persistedUser = await auth.getUser();
+      return response.status(200).json({
+        user: {
+          email: persistedUser.email,
+          name: persistedUser.name,
+          isActive: persistedUser.isActive
+        },
+        message: "user already logged in"
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
     const rules = {
       email: "required|email",
       password: "required"
     };
 
     const validation = await validateAll(data, rules);
-
     if (validation.fails()) {
       return response.status(400).json({ message: validation.messages() });
     }
@@ -256,12 +270,6 @@ class AuthController {
         .json({ message: "new password cannot be the same" });
     }
 
-    try {
-      await auth.attempt(data.email, data.old_password);
-    } catch (e) {
-      return response.status(400).json("login failed");
-    }
-
     const user = await User.findBy("email", data.email);
 
     if (!user) {
@@ -273,6 +281,11 @@ class AuthController {
         .status(400)
         .json({ message: "user is not active - cannot change password" });
     }
+
+    /** checks password */
+    const isSame = await Hash.verify(data.old_password, user.password);
+    if (!isSame)
+      return response.status(400).json({ message: "invalid password" });
 
     user.merge({ password: data.password, reset_token: null });
 
