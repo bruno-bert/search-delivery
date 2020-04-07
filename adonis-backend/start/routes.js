@@ -47,3 +47,14 @@ Route.group(() => {
 Route.group(() => {
   Route.resource("shops", "ShopController").apiOnly();
 }).middleware("auth");
+
+Route.get("google", async ({ ally }) => {
+  console.log("tentando autenticar no google");
+  await ally.driver("google").redirect();
+});
+
+Route.get("authenticated/google", async ({ ally }) => {
+  console.log("autenticou no google");
+  const user = await ally.driver("google").getUser();
+  return user;
+});
