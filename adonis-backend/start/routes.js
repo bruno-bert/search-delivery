@@ -19,6 +19,10 @@ const Route = use("Route");
 Route.post("/authenticate", "AuthController.authenticate");
 Route.post("/register", "AuthController.register");
 Route.get("register/confirm/:token", "AuthController.confirmEmail");
+Route.post(
+  "register/confirm/email",
+  "AuthController.sendConfirmationEmail"
+).middleware("auth");
 
 /** Password Reset routes */
 /** this route is sent by client to the backend - the backend will send the reset email with a link to the client and the token */
@@ -48,13 +52,6 @@ Route.group(() => {
   Route.resource("shops", "ShopController").apiOnly();
 }).middleware("auth");
 
-Route.get("google", async ({ ally }) => {
-  console.log("tentando autenticar no google");
-  await ally.driver("google").redirect();
-});
+Route.get("google", "GoogleAuthController.login");
 
-Route.get("authenticated/google", async ({ ally }) => {
-  console.log("autenticou no google");
-  const user = await ally.driver("google").getUser();
-  return user;
-});
+Route.get("authenticated/google", "GoogleAuthController.callback");

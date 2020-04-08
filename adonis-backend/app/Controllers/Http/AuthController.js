@@ -4,8 +4,12 @@ const User = use("App/Models/User");
 const { validateAll } = use("Validator");
 const Mail = use("Mail");
 const Env = use("Env");
+const Config = use("Config");
 const randomString = require("random-string");
 const Hash = use("Hash");
+
+const requiresAccountActivation =
+  Config.get("auth.extends.requiresAccountActivation") === "true";
 
 class AuthController {
   async authenticate({ request, auth, response }) {
@@ -26,6 +30,13 @@ class AuthController {
     if (!user) {
       return response.status(400).json({ message: "invalid user" });
     } else {
+      if (user.provider !== "mail")
+        return response.status(400).json({
+          message:
+            "user account registered needs to login by using the provider " +
+            user.provider
+        });
+
       try {
         await auth.remember(true).attempt(email, password);
       } catch (e) {
@@ -57,55 +68,140 @@ class AuthController {
     });
   }
 
+  async sendConfirmationEmail({ response, auth }) {
+    const authUser = await auth.getUser();
+    const { email } = authUser;
+
+    /** checks if user exists  */
+    const user = await User.findBy("email", email);
+    if (!user) {
+      return response.status(400).json({
+        message: `user not found`
+      });
+    }
+
+    /** checks if user is already active  */
+    if (user.isActive)
+      return response.status(400).json({
+        message: `user is already active`
+      });
+
+    /** checks if user provider is mail  */
+    if (user.provider !== "mail")
+      return response.status(400).json({
+        message: `user account provider ${user.provider} does not allow this action`
+      });
+
+    /** on each request from client to send the confirmation email, regenerates the confirmation token */
+    const confirmation_token = randomString({ length: 40 });
+
+    user.merge({
+      confirmation_token
+    });
+    await user.save();
+
+    const mailData = {
+      ...user,
+      mailTo: user.email,
+      url: `${Env.get("APP_URL")}/register/confirm/${user.confirmation_token}`
+    };
+
+    const result = await this._sendConfirmationEmail(mailData);
+
+    if (!result.error) {
+      return response
+        .status(200)
+        .json({
+          user: { name: user.name, email: user.email, isActive: user.isActive },
+          message: result.message
+        });
+    } else {
+      return response
+        .status(400)
+        .json({
+          user: { name: user.name, email: user.email, isActive: user.isActive },
+          message: result.message
+        });
+    }
+  }
+
+  async _sendConfirmationEmail(mailData) {
+    /** sends confirmation email */
+
+    /** TODO: change to job */
+    try {
+      await Mail.send(
+        requiresAccountActivation ? "confirm_email" : "creation_email",
+        mailData,
+        message => {
+          message
+            .from(Env.get("MAIL_FROM"))
+            .to(mailData.mailTo)
+            .subject(
+              requiresAccountActivation
+                ? Env.get("MAIl_CONFIRM_SUBJECT")
+                : Env.get("MAIl_CREATION_SUBJECT")
+            );
+        }
+      );
+
+      return { error: false, message: "mail sent successfully" };
+    } catch (e) {
+      console.log("error on trying to send email: " + e.message);
+      return { error: true, message: e.message };
+    }
+    /** END - sends confirmation email */
+  }
+
   async register({ request, response, auth }) {
     const data = request.only(["name", "email", "provider", "password"]);
+
+    let { callbackUrl } = request.only(["callbackUrl"]);
+    if (!callbackUrl) callbackUrl = Env.get("CLIENT_URL");
 
     // validate form inputs
     const rules = {
       email: "required|email|unique:users,email",
       password: "required|confirmed|min:6"
     };
+
     const validation = await validateAll(request.all(), rules);
 
     if (validation.fails()) {
       return response.status(400).json({ message: validation.messages() });
     }
 
-    const confirmation_token = randomString({ length: 40 });
+    /** creates the user on database (activates the user or not depending on global configuration 'requiresAccountActivation' */
+    const confirmation_token = requiresAccountActivation
+      ? randomString({ length: 40 })
+      : null;
 
     const result = await User.create({
       ...data,
       provider: data.provider || "mail",
-      isActive: false,
+      isActive: requiresAccountActivation ? false : true,
       confirmation_token
     });
+    /** END - user creation */
 
-    // send confirmation email
-
+    /** sends confirmation/creation email */
     const mailData = {
       ...result,
-      url: `${Env.get("APP_URL")}/register/confirm/${confirmation_token}`
+      mailTo: result.email,
+      url: requiresAccountActivation
+        ? `${Env.get("APP_URL")}/register/confirm/${confirmation_token}`
+        : callbackUrl
     };
+    await this._sendConfirmationEmail(mailData);
+    /** END - sends confirmation/creation email */
 
-    /** TODO: change to job */
-    try {
-      await Mail.send("confirm_email", mailData, message => {
-        message
-          .from(Env.get("MAIL_FROM"))
-          .to(result.email)
-          .subject("Busca Delivery - Confirmação de Conta");
-      });
-    } catch (e) {
-      const user = await User.findOrFail(result.id);
-      user.delete();
-      return response.status(400).json({ message: e.message });
-    }
-
+    /** login after creation */
     try {
       await auth.remember(true).attempt(data.email, data.password);
     } catch (e) {
       return response.status(400).json({ message: e.message });
     }
+    /** END - login */
 
     return response.status(200).json({
       user: {
@@ -138,6 +234,11 @@ class AuthController {
     if (!user) {
       return response.status(401).json({ message: "user not found" });
     }
+
+    if (user.provider !== "mail")
+      return response.status(400).json({
+        message: `user account provider ${user.provider} does not allow this action`
+      });
 
     const reset_token = randomString({ length: 40 });
     user.merge({ reset_token });
@@ -181,6 +282,11 @@ class AuthController {
         .json({ message: "confirmation token is invalid" });
     }
 
+    if (user.provider !== "mail")
+      return response.status(400).json({
+        message: `user account provider ${user.provider} does not allow this action`
+      });
+
     // set confirmation to null and is_active to true
     user.confirmation_token = null;
     user.isActive = true;
@@ -216,6 +322,11 @@ class AuthController {
     if (!userExists) {
       return response.status(401).json({ message: "user not found" });
     }
+
+    if (userExists.provider !== "mail")
+      return response.status(400).json({
+        message: `user account provider ${userExists.provider} does not allow this action`
+      });
 
     // get user with the confirmation token from request body
     const userWithToken = await User.findBy("reset_token", data.reset_token);
@@ -273,6 +384,11 @@ class AuthController {
         .status(400)
         .json({ message: "user is not active - cannot change password" });
     }
+
+    if (user.provider !== "mail")
+      return response.status(400).json({
+        message: `user account provider ${user.provider} does not allow this action`
+      });
 
     /** checks password */
     const isSame = await Hash.verify(data.old_password, user.password);

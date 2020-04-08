@@ -21,6 +21,18 @@ module.exports = {
 
   /*
   |--------------------------------------------------------------------------
+  | Extends
+  |--------------------------------------------------------------------------
+  |
+  | These are custom extensions that affect other auth behaviors implemented in application level
+  |
+  */
+  extends: {
+    requiresAccountActivation: Env.get("AUTH_REQUIRES_ACCOUNT_ACTIVATION")
+  },
+
+  /*
+  |--------------------------------------------------------------------------
   | Session
   |--------------------------------------------------------------------------
   |
@@ -74,7 +86,7 @@ module.exports = {
     password: "password",
     options: {
       secret: Env.get("APP_KEY"),
-      expiresIn: 86400 //seconds (1 day)
+      expiresIn: Env.get("JWT_TOKEN_EXPIRATION_IN_SECONDS") //seconds (1 day)
     }
   },
 
