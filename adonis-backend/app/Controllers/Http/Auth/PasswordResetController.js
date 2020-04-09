@@ -6,6 +6,8 @@ const Mail = use("Mail");
 const Env = use("Env");
 const randomString = require("random-string");
 
+const Queue = require("../../../Jobs/Queue");
+
 class PasswordResetController {
   async sendResetLinkEmail({ request, response }) {
     const data = request.only(["email", "callbackUrl"]);
@@ -41,21 +43,13 @@ class PasswordResetController {
     // send reset email
     //the link in the email is to the client application
     const mailData = {
-      ...user,
+      name: user.name,
+      email: user.email,
       url: `${data.callbackUrl}/${reset_token}`
     };
 
-    /** TODO: change to job */
-    try {
-      await Mail.send("reset_password", mailData, message => {
-        message
-          .from(Env.get("MAIL_FROM"))
-          .to(data.email)
-          .subject("Busca Delivery - Reset de Senha");
-      });
-    } catch (e) {
-      return response.status(400).json({ message: e.message });
-    }
+    /** add job to send mail to reset password */
+    await Queue.add("PasswordResetMail", { mailData });
 
     return response.status(200).json({
       user: {
@@ -65,6 +59,7 @@ class PasswordResetController {
       message: "reset mail sent successfully"
     });
   }
+
   async confirmPasswordReset({ request, response }) {
     const data = request.only(["email", "reset_token", "password"]);
 

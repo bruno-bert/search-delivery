@@ -1,5 +1,6 @@
 {
-    "execMap": {
-        "js": "sucrase-node"
-    }
+  "execMap": {
+    "js": "sucrase-node"
+  },
+  "ext": "js,json,env,edge"
 }

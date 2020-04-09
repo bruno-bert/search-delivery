@@ -19,7 +19,7 @@ const Route = use("Route");
 Route.post("authenticate", "Auth/LoginController.login");
 Route.post("register", "Auth/RegisterController.register");
 
-Route.get("register/confirm/:token", "Auth/RegisterController.confirmEmail");
+Route.get("register/confirm/:token", "Auth/RegisterController.confirmAccount");
 
 Route.post(
   "register/confirm/email",

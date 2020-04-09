@@ -48,12 +48,14 @@ class AuthController {
     const mailData = {
       name: result.name,
       email: result.email,
-      confirmation_token,
       url: requiresAccountActivation
         ? `${Env.get("APP_URL")}/register/confirm/${confirmation_token}`
         : callbackUrl
     };
-    await Queue.add("RegistrationMail", { mailData });
+    await Queue.add(
+      requiresAccountActivation ? "RegistrationMail" : "AccountCreationMail",
+      { mailData }
+    );
     /** END -  add job to send confirmation/creation email */
 
     /** login after creation */
@@ -74,7 +76,7 @@ class AuthController {
     });
   }
 
-  async confirmEmail({ params, response }) {
+  async confirmAccount({ params, response }) {
     // get user with the confirmation token
     const user = await User.findBy("confirmation_token", params.token);
 

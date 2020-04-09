@@ -5,7 +5,12 @@ const redisConfig = {
   port: process.env.REDIS_PORT
 };
 
-const jobs = [{ key: "RegistrationMail" }, { key: "AccountCreationMail" }];
+const jobs = [
+  { key: "RegistrationMail" },
+  { key: "AccountCreationMail" },
+  { key: "PasswordResetMail" },
+  { key: "ChangePasswordMail" }
+];
 
 const queues = jobs.map(job => ({
   bull: new Queue(job.key, redisConfig),

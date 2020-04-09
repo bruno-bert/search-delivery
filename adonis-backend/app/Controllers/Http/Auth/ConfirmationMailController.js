@@ -6,6 +6,8 @@ const Env = use("Env");
 const Config = use("Config");
 const randomString = require("random-string");
 
+const Queue = require("../../../Jobs/Queue");
+
 const requiresAccountActivation =
   Config.get("auth.extends.requiresAccountActivation") === "true";
 
@@ -43,52 +45,18 @@ class ConfirmationMailController {
     await user.save();
 
     const mailData = {
-      ...user,
-      mailTo: user.email,
+      name: user.name,
+      email: user.email,
       url: `${Env.get("APP_URL")}/register/confirm/${user.confirmation_token}`
     };
 
-    const result = await this._sendConfirmationEmail(mailData);
+    /** add job to re-send mail to confirm account */
+    await Queue.add("RegistrationMail", { mailData });
 
-    if (!result.error) {
-      return response.status(200).json({
-        user: { name: user.name, email: user.email, isActive: user.isActive },
-        message: result.message
-      });
-    } else {
-      return response.status(400).json({
-        user: { name: user.name, email: user.email, isActive: user.isActive },
-        message: result.message
-      });
-    }
-  }
-
-  async _sendConfirmationEmail(mailData) {
-    /** sends confirmation email */
-
-    /** TODO: change to job */
-    try {
-      await Mail.send(
-        requiresAccountActivation ? "confirm_email" : "creation_email",
-        mailData,
-        message => {
-          message
-            .from(Env.get("MAIL_FROM"))
-            .to(mailData.mailTo)
-            .subject(
-              requiresAccountActivation
-                ? Env.get("MAIl_CONFIRM_SUBJECT")
-                : Env.get("MAIl_CREATION_SUBJECT")
-            );
-        }
-      );
-
-      return { error: false, message: "mail sent successfully" };
-    } catch (e) {
-      console.log("error on trying to send email: " + e.message);
-      return { error: true, message: e.message };
-    }
-    /** END - sends confirmation email */
+    return response.status(200).json({
+      user: { name: user.name, email: user.email, isActive: user.isActive },
+      message: "ok"
+    });
   }
 }
 

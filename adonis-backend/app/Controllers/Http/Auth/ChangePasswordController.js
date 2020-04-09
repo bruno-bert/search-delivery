@@ -6,6 +6,8 @@ const Mail = use("Mail");
 const Env = use("Env");
 const Hash = use("Hash");
 
+const Queue = require("../../../Jobs/Queue");
+
 class ChangePasswordController {
   async changePassword({ request, response, auth }) {
     const data = request.only(["email", "password", "old_password"]);
@@ -56,21 +58,13 @@ class ChangePasswordController {
 
     // send change password email - this mail is only a awareness to user
     const mailData = {
-      ...user,
-      mail: Env.get("MAIL_SUPPORT")
+      name: user.name,
+      email: user.email,
+      support_mail: Env.get("MAIL_SUPPORT")
     };
 
-    /** TODO: change to job */
-    try {
-      await Mail.send("change_password", mailData, message => {
-        message
-          .from(Env.get("MAIL_FROM"))
-          .to(user.email)
-          .subject("Busca Delivery - Aviso de Troca de Senha");
-      });
-    } catch (e) {
-      return response.status(400).json({ message: e.message });
-    }
+    /** add job to send change passowrd awareness mail  */
+    await Queue.add("ChangePasswordMail", { mailData });
 
     response.status(200).json({
       user: {

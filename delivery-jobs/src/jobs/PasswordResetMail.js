@@ -2,10 +2,9 @@ import Mail from "../lib/Mail";
 import mailConfig from "../config/mail";
 import TemplateEngine from "../lib/TemplateEngine";
 
-const JOB_KEY = "AccountCreationMail";
+const JOB_KEY = "PasswordResetMail";
 const MAIL_TEMPLATE = JOB_KEY;
-const MAIL_SUBJECT =
-  process.env.MAIL_CREATION_SUBJECT || "Busca Delivery - Criação de Conta";
+const MAIL_SUBJECT = "Busca Delivery - Reset de Senha";
 
 export default {
   key: JOB_KEY,
