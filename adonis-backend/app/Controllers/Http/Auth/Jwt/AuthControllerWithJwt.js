@@ -7,7 +7,7 @@ const Env = use("Env");
 const randomString = require("random-string");
 const Hash = use("Hash");
 
-class AuthController {
+class AuthControllerWithJwt {
   async authenticate({ request, auth, response }) {
     const data = request.only(["email", "password", "name"]);
     const { email, password, name } = data;
@@ -300,4 +300,4 @@ class AuthController {
   }
 }
 
-module.exports = AuthController;
+module.exports = AuthControllerWithJwt;

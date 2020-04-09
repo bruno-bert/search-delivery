@@ -68,4 +68,6 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
+delivery-jobs/.env
+adonis-backend/.env
 .env

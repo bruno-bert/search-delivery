@@ -16,27 +16,40 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
 
-Route.post("/authenticate", "AuthController.authenticate");
-Route.post("/register", "AuthController.register");
-Route.get("register/confirm/:token", "AuthController.confirmEmail");
+Route.post("authenticate", "Auth/LoginController.login");
+Route.post("register", "Auth/RegisterController.register");
+
+Route.get("register/confirm/:token", "Auth/RegisterController.confirmEmail");
+
 Route.post(
   "register/confirm/email",
-  "AuthController.sendConfirmationEmail"
+  "Auth/ConfirmationMailController.sendConfirmationEmail"
 ).middleware("auth");
 
 /** Password Reset routes */
 /** this route is sent by client to the backend - the backend will send the reset email with a link to the client and the token */
-Route.post("password-reset/email", "AuthController.sendResetLinkEmail");
-
-/** this route is sent by client in the reset form screen, the client will send to adonis the token to reset the password and the new password */
-Route.post("password-reset/confirm", "AuthController.confirmPasswordReset");
-/** END Password Reset routes */
-
-Route.post("password-change", "AuthController.changePassword").middleware(
-  "auth"
+Route.post(
+  "password-reset/email",
+  "Auth/PasswordResetController.sendResetLinkEmail"
 );
 
-Route.post("logout", "AuthController.logout").middleware("auth");
+/** this route is sent by client in the reset form screen, the client will send to adonis the token to reset the password and the new password */
+Route.post(
+  "password-reset/confirm",
+  "Auth/PasswordResetController.confirmPasswordReset"
+);
+/** END Password Reset routes */
+
+Route.post(
+  "password-change",
+  "Auth/ChangePasswordController.changePassword"
+).middleware("auth");
+
+Route.post("logout", "Auth/LogoutController.logout").middleware("auth");
+
+Route.get("google", "Auth/GoogleAuthController.login");
+
+Route.get("authenticated/google", "Auth/GoogleAuthController.callback");
 
 Route.group(() => {
   Route.get("/cities", "CityController.index");
@@ -51,7 +64,3 @@ Route.group(() => {
 Route.group(() => {
   Route.resource("shops", "ShopController").apiOnly();
 }).middleware("auth");
-
-Route.get("google", "GoogleAuthController.login");
-
-Route.get("authenticated/google", "GoogleAuthController.callback");
