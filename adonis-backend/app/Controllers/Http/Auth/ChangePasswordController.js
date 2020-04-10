@@ -2,7 +2,6 @@
 
 const User = use("App/Models/User");
 const { validateAll } = use("Validator");
-const Mail = use("Mail");
 const Env = use("Env");
 const Hash = use("Hash");
 

@@ -1,7 +1,6 @@
 "use strict";
 
 const User = use("App/Models/User");
-const Mail = use("Mail");
 const Env = use("Env");
 const Config = use("Config");
 const randomString = require("random-string");

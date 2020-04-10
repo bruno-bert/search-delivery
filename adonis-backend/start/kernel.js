@@ -38,7 +38,9 @@ const globalMiddleware = [
 */
 const namedMiddleware = {
   auth: "Adonis/Middleware/Auth",
-  guest: "Adonis/Middleware/AllowGuestOnly"
+  guest: "Adonis/Middleware/AllowGuestOnly",
+  check_token_on_blacklist: "App/Middleware/CheckTokenBlackList",
+  add_existing_token_to_blacklist: "App/Middleware/AddTokenToBlackList"
 };
 
 /*

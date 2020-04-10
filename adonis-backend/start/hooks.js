@@ -10,4 +10,16 @@ hooks.after.providersBooted(() => {
       .status(401)
       .json({ message: "unauthorized: " + error.message });
   });
+
+  Exception.handle("InvalidJwtToken", (error, { response }) => {
+    return response
+      .status(401)
+      .json({ message: "unauthorized: " + error.message });
+  });
+
+  Exception.handle("ExpiredJwtToken", (error, { response }) => {
+    return response
+      .status(401)
+      .json({ message: "unauthorized: " + error.message });
+  });
 });

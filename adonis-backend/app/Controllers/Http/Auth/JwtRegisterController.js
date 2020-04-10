@@ -11,7 +11,7 @@ const Queue = require("../../../Jobs/Queue");
 const requiresAccountActivation =
   Config.get("auth.extends.requiresAccountActivation") === "true";
 
-class RegisterController {
+class JwtRegisterController {
   async register({ request, response, auth }) {
     const data = request.only(["name", "email", "provider", "password"]);
 
@@ -58,8 +58,9 @@ class RegisterController {
     /** END -  add job to send confirmation/creation email */
 
     /** login after creation */
+    let token = null;
     try {
-      await auth.remember(true).attempt(data.email, data.password);
+      token = await auth.attempt(data.email, data.password);
     } catch (e) {
       return response.status(400).json({ message: e.message });
     }
@@ -71,39 +72,10 @@ class RegisterController {
         email: data.email,
         isActive: result.isActive
       },
+      token: token.token,
       message: "user registered sucessfully"
     });
   }
-
-  async confirmAccount({ params, response }) {
-    // get user with the confirmation token
-    const user = await User.findBy("confirmation_token", params.token);
-
-    if (!user) {
-      return response
-        .status(400)
-        .json({ message: "confirmation token is invalid" });
-    }
-
-    if (user.provider !== "mail")
-      return response.status(400).json({
-        message: `user account provider ${user.provider} does not allow this action`
-      });
-
-    // set confirmation to null and is_active to true
-    user.confirmation_token = null;
-    user.isActive = true;
-
-    // persist user to database
-    await user.save();
-
-    response.status(200).json({
-      user: { name: user.name, email: user.email, isActive: user.isActive },
-      message: "account confirmed successfully"
-    });
-
-    //** TODO - redirecionar para caminho no cliente */
-  }
 }
 
-module.exports = RegisterController;
+module.exports = JwtRegisterController;

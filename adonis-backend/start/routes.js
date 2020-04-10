@@ -15,16 +15,32 @@
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
+const Config = use("Config");
 
-Route.post("authenticate", "Auth/LoginController.login");
-Route.post("register", "Auth/RegisterController.register");
+const authMechanism = Config.get("auth.authenticator");
+
+if (authMechanism === "session") {
+  Route.post("authenticate", "Auth/LoginController.login");
+  Route.post("register", "Auth/RegisterController.register");
+  Route.post("logout", "Auth/LogoutController.logout").middleware("auth");
+} else {
+  Route.post("authenticate", "Auth/JwtLoginController.login").middleware(
+    "add_existing_token_to_blacklist"
+  );
+  Route.post("register", "Auth/JwtRegisterController.register");
+  Route.post("logout", "Auth/JwtLogoutController.logout")
+    .middleware("auth")
+    .middleware("check_token_on_blacklist");
+}
 
 Route.get("register/confirm/:token", "Auth/RegisterController.confirmAccount");
 
 Route.post(
   "register/confirm/email",
   "Auth/ConfirmationMailController.sendConfirmationEmail"
-).middleware("auth");
+)
+  .middleware("auth")
+  .middleware("check_token_on_blacklist");
 
 /** Password Reset routes */
 /** this route is sent by client to the backend - the backend will send the reset email with a link to the client and the token */
@@ -40,12 +56,9 @@ Route.post(
 );
 /** END Password Reset routes */
 
-Route.post(
-  "password-change",
-  "Auth/ChangePasswordController.changePassword"
-).middleware("auth");
-
-Route.post("logout", "Auth/LogoutController.logout").middleware("auth");
+Route.post("password-change", "Auth/ChangePasswordController.changePassword")
+  .middleware("auth")
+  .middleware("check_token_on_blacklist");
 
 Route.get("google", "Auth/GoogleAuthController.login");
 
@@ -54,13 +67,19 @@ Route.get("authenticated/google", "Auth/GoogleAuthController.callback");
 Route.group(() => {
   Route.get("/cities", "CityController.index");
   Route.post("/city", "CityController.store");
-}).middleware("auth");
+})
+  .middleware("auth")
+  .middleware("check_token_on_blacklist");
 
 Route.group(() => {
   Route.get("/segments", "SegmentController.index");
   Route.post("/segment", "SegmentController.store");
-}).middleware("auth");
+})
+  .middleware("auth")
+  .middleware("check_token_on_blacklist");
 
 Route.group(() => {
   Route.resource("shops", "ShopController").apiOnly();
-}).middleware("auth");
+})
+  .middleware("auth")
+  .middleware("check_token_on_blacklist");

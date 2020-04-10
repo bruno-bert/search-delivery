@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm-run-all -p dev:*",
-    "dev:queue": "nodemon src/index.js"
+    "dev:queue": "nodemon src/queue.js",
+    "dev:express": "nodemon src/express.js"
   },
   "keywords": [],
   "author": "",
@@ -17,8 +18,10 @@
   },
   "dependencies": {
     "bull": "^3.13.0",
+    "bull-board": "^0.7.0",
     "dotenv": "^8.2.0",
     "edge.js": "^1.1.4",
+    "express": "^4.17.1",
     "nodemailer": "^6.4.6"
   }
 }

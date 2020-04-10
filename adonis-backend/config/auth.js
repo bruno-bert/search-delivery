@@ -16,8 +16,7 @@ module.exports = {
   | Available Serializers - lucid, database
   |
   */
-  //authenticator: "jwt",
-  authenticator: "session",
+  authenticator: Env.get("AUTH_MECHANISM") || "session",
 
   /*
   |--------------------------------------------------------------------------
