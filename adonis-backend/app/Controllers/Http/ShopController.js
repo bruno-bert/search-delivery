@@ -1,20 +1,64 @@
 "use strict";
 
 const Shop = use("App/Models/Shop");
-
+const Database = use("Database");
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
 /**
  * Resourceful controller for interacting with shops
  */
+
 class ShopController {
+  async index({ request, response }) {
+    const { geo, segment, city } = request.only(["geo", "segment", "city"]);
+    let { distance } = request.only(["distance"]);
+
+    let where = "";
+    let stmtDistance = "";
+    distance = distance || 50000; // default = 50km
+
+    if (geo) {
+      const { lat, lon } = geo;
+      const point = `POINT(${lat} ${lon})`;
+      const start = `ST_GeographyFromText('${point}')`;
+      const end = `geo`;
+      stmtDistance = `ST_Distance( ${start}, ${end} )`;
+
+      if (distance) {
+        if (where.length > 0) where = where + " and ";
+        where = `${stmtDistance} <= ${String(distance)}`;
+      }
+    }
+
+    if (segment) {
+      if (where.length > 0) where = where + " and ";
+      where = where + `segment_id = ${segment}`;
+    }
+
+    if (city) {
+      if (where.length > 0) where = where + " and ";
+      where = where + `city_id = ${city}`;
+    }
+
+    const limit = 30;
+    const selectStmt = `SELECT * FROM shops WHERE ${where} `;
+    let orderByStmt = "";
+    let limitStmt = ` LIMIT ${limit} `;
+
+    if (stmtDistance) orderByStmt = ` ORDER BY ${stmtDistance} `;
+    const completeStmt = selectStmt + orderByStmt + limitStmt;
+
+    const data = await Database.raw(completeStmt);
+    return response.status(200).json({ count: data.rowCount, rows: data.rows });
+  }
+
   /**
    * Show a list of all shops.
    * GET shops
    *
    */
-  async index() {
+  async index2() {
     const shops = Shop.query()
       .with("city")
       .with("segment")
