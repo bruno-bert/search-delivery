@@ -23,12 +23,20 @@ if (authMechanism === "session") {
   Route.post("authenticate", "Auth/LoginController.login");
   Route.post("register", "Auth/RegisterController.register");
   Route.post("logout", "Auth/LogoutController.logout").middleware("auth");
+  Route.post(
+    "delete-account",
+    "Auth/DeleteAccountController.deleteAccount"
+  ).middleware("auth");
 } else {
   Route.post("authenticate", "Auth/JwtLoginController.login").middleware(
     "add_existing_token_to_blacklist"
   );
   Route.post("register", "Auth/JwtRegisterController.register");
   Route.post("logout", "Auth/JwtLogoutController.logout")
+    .middleware("auth")
+    .middleware("check_token_on_blacklist");
+
+  Route.post("delete-account", "Auth/JwtDeleteAccountController.deleteAccount")
     .middleware("auth")
     .middleware("check_token_on_blacklist");
 }
