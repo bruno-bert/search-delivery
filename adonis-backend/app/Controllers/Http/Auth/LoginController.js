@@ -36,7 +36,7 @@ class LoginController {
       }
 
       return response.status(200).json({
-        user: { email, name, isActive: user.isActive },
+        user: { email, name, is_active: user.is_active },
         message: "user logged in sucessfully"
       });
     }

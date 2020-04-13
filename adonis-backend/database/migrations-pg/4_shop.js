@@ -15,9 +15,9 @@ class ShopSchema extends Schema {
       table.integer("likes").nullable();
       table.integer("dislikes").nullable();
       table.decimal("rating").nullable();
-      table.integer("minTimeToDeliver").nullable();
-      table.integer("maxTimeToDeliver").nullable();
-      table.decimal("rateToDeliver").nullable();
+      table.integer("min_time_to_deliver").nullable();
+      table.integer("max_time_to_deliver").nullable();
+      table.decimal("rate_to_deliver").nullable();
       table
         .integer("city_id")
         .unsigned()
@@ -30,10 +30,10 @@ class ShopSchema extends Schema {
         .inTable("segments");
       table.json("contacts").notNullable();
       table
-        .boolean("isNew")
+        .boolean("is_new")
         .notNullable()
         .defaultTo(true);
-      table.string("createdBy").notNullable();
+      table.string("created_by").notNullable();
 
       table.timestamps();
     });

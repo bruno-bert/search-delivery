@@ -38,7 +38,7 @@ class JwtRegisterController {
     const result = await User.create({
       ...data,
       provider: data.provider || "mail",
-      isActive: requiresAccountActivation ? false : true,
+      is_active: requiresAccountActivation ? false : true,
       confirmation_token
     });
     /** END - user creation */
@@ -70,7 +70,7 @@ class JwtRegisterController {
       user: {
         name: data.name,
         email: data.email,
-        isActive: result.isActive
+        is_active: result.is_active
       },
       token: token.token,
       message: "user registered sucessfully"

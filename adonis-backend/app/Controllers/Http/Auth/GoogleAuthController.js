@@ -31,7 +31,7 @@ class GoogleAuthController {
         return response.status(200).json({
           user: {
             name: userExists.name,
-            isActive: userExists.isActive,
+            is_active: userExists.is_active,
             email: userExists.email
           },
           message: "user logged in sucessfully"
@@ -42,7 +42,7 @@ class GoogleAuthController {
         name,
         email,
         provider,
-        isActive: true,
+        is_active: true,
         password: ""
       });
 
@@ -51,7 +51,7 @@ class GoogleAuthController {
       return response.status(200).json({
         user: {
           name: userCreated.name,
-          isActive: userCreated.isActive,
+          is_active: userCreated.is_active,
           email: userCreated.email
         },
         message: "user created and logged in sucessfully"

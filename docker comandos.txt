@@ -1,0 +1,25 @@
+comandos docker
+
+logar (só exige a primeira vez):
+docker login / docker logout
+
+-- run redis
+docker run --name redis -p 6379:6379 -d -t redis:alpine
+
+pega imagem postgres (latest)
+docker pull postgres
+
+cria container postgres
+docker run --name yousafedb -e POSTGRES_PASSWORD=icwsig@78 -p 5432:5432 -v ./pgdata:/var/lib/postgresql/data   -d postgres
+
+entra no container
+docker exec -it yousafedb  psql -U postgres 
+
+remove container 
+docker rm yousafedb
+
+cria volume 
+docker volume create pgdata
+
+remove volume
+docker volume rm pgdata

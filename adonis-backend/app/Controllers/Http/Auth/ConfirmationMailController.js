@@ -24,7 +24,7 @@ class ConfirmationMailController {
     }
 
     /** checks if user is already active  */
-    if (user.isActive)
+    if (user.is_active)
       return response.status(400).json({
         message: `user is already active`
       });
@@ -53,7 +53,7 @@ class ConfirmationMailController {
     await Queue.add("RegistrationMail", { mailData });
 
     return response.status(200).json({
-      user: { name: user.name, email: user.email, isActive: user.isActive },
+      user: { name: user.name, email: user.email, is_active: user.is_active },
       message: "ok"
     });
   }

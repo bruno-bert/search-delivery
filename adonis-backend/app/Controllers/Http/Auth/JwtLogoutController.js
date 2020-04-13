@@ -17,7 +17,7 @@ class JwtLogoutController {
 
     /** returns the logged out user info and a message */
     return response.status(200).json({
-      user: { email: user.email, name: user.name, isActive: user.isActive },
+      user: { email: user.email, name: user.name, is_active: user.is_active },
       message: "user logged out sucessfully"
     });
   }

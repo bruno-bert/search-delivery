@@ -9,7 +9,7 @@ class JwtDeleteAccountController {
     const token = auth.getAuthHeader();
 
     try {
-      const existingUser = await User.find(user.id);
+      const existingUser = await User.findBy("email", user.email);
       await existingUser.delete();
       Redis.lpush("blacklist", token);
     } catch (e) {

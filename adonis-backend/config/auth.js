@@ -40,8 +40,10 @@ module.exports = {
   |
   */
   session: {
-    serializer: "lucid",
+    //serializer: "lucid",
+    serializer: "LucidMongo",
     model: "App/Models/User",
+    token: "App/Models/Token",
     scheme: "session",
     uid: "email",
     password: "password"
@@ -78,8 +80,10 @@ module.exports = {
   |
   */
   jwt: {
-    serializer: "lucid",
+    serializer: "LucidMongo",
+    //serializer: "lucid",
     model: "App/Models/User",
+    token: "App/Models/Token",
     scheme: "jwt",
     uid: "email",
     password: "password",

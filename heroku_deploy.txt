@@ -1,0 +1,27 @@
+-- cria aplicacao no heroku
+heroku create yousafe-api-appname
+
+-- adiciona git remoto da aplicacao
+git remote add yousafe-api-appname https://git.heroku.com/yousafe-api-appname.git
+
+--adiciona o buildpack pra multi directories (se dot net)
+heroku buildpacks:set -a yousafe-api-appname https://github.com/bruno-bert/heroku-buildpack-select-subdir
+
+--add buildpack var and set the dotnet buildpack (se dot net)
+heroku config:add BUILDPACK=api/yousafe-api-appname=https://github.com/bruno-bert/dotnetcore-buildpack -a yousafe-api-appname
+
+--faz o deploy no heroku
+git push yousafe-api-appname master
+
+-- add database postgres
+heroku addons:create heroku-postgresql:hobby-dev -a yousafe-api-database
+
+-- share database between apps
+heroku addons:attach yousafe-api-database::DATABASE --app yousafe-api-appname
+
+-- connect to database (get this cli command from heroku website)
+heroku pg:psql postgresql-concentric-37937 --app yousafe-api-database
+
+
+--resetar a base toda
+heroku pg:reset DATABASE_URL --app yousafe-api-database

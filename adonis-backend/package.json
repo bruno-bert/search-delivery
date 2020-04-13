@@ -30,6 +30,7 @@
     "@adonisjs/session": "^1.0.29",
     "@adonisjs/validator": "^5.0.6",
     "bull": "^3.13.0",
+    "lucid-mongo": "^3.1.6",
     "pg": "^8.0.0",
     "random-string": "^0.2.0"
   },

@@ -1,0 +1,2 @@
+-- backup completo de um schema especifico
+pg_dump --file "backup.sql" --host "localhost" --port "5432" --username "postgres" --format=p "yousafe"

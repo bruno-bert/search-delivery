@@ -5,10 +5,11 @@ const User = use("App/Models/User");
 class DeleteAccountController {
   async deleteAccount({ auth, response }) {
     const user = auth.user;
+    console.log(user);
 
     try {
       auth.logout();
-      const existingUser = await User.find(user.id);
+      const existingUser = await User.findBy("email", user.email);
       await existingUser.delete();
     } catch (e) {
       return response

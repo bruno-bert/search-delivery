@@ -35,7 +35,7 @@ class ChangePasswordController {
       return response.status(401).json({ message: "user not found" });
     }
 
-    if (!user.isActive) {
+    if (!user.is_active) {
       return response
         .status(400)
         .json({ message: "user is not active - cannot change password" });
@@ -69,7 +69,7 @@ class ChangePasswordController {
       user: {
         name: user.name,
         email: user.email,
-        isActive: user.isActive
+        is_active: user.is_active
       },
       message: "password changed sucessfully"
     });

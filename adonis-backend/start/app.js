@@ -21,7 +21,8 @@ const providers = [
   "@adonisjs/framework/providers/ViewProvider",
   "@adonisjs/mail/providers/MailProvider",
   "@adonisjs/ally/providers/AllyProvider",
-  "@adonisjs/redis/providers/RedisProvider"
+  "@adonisjs/redis/providers/RedisProvider",
+  "lucid-mongo/providers/LucidMongoProvider"
 ];
 
 /*
@@ -33,7 +34,10 @@ const providers = [
 | Providers for migrations, tests etc.
 |
 */
-const aceProviders = ["@adonisjs/lucid/providers/MigrationsProvider"];
+const aceProviders = [
+  "@adonisjs/lucid/providers/MigrationsProvider",
+  "lucid-mongo/providers/MigrationsProvider"
+];
 
 /*
 |--------------------------------------------------------------------------

@@ -100,7 +100,7 @@ class PasswordResetController {
       user: {
         name: userWithToken.name,
         email: userWithToken.email,
-        isActive: userWithToken.isActive
+        is_active: userWithToken.is_active
       },
       message: "password reset successfully"
     });

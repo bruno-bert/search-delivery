@@ -19,7 +19,7 @@ class UserSchema extends Schema {
       table.string("provider", 80).notNullable();
 
       table
-        .boolean("isActive")
+        .boolean("is_active")
         .notNullable()
         .defaultTo(false);
 

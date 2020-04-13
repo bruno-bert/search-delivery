@@ -54,19 +54,6 @@ class ShopController {
   }
 
   /**
-   * Show a list of all shops.
-   * GET shops
-   *
-   */
-  async index2() {
-    const shops = Shop.query()
-      .with("city")
-      .with("segment")
-      .fetch();
-    return shops;
-  }
-
-  /**
    * Create/save a new shop.
    * POST shops
    *
@@ -77,8 +64,8 @@ class ShopController {
   async store({ request, auth }) {
     const data = request.all();
     const shop = await Shop.create({
-      isNew: true,
-      createdBy: auth.user.id,
+      is_new: true,
+      created_by: auth.user.id,
       ...data
     });
     return shop;
@@ -109,7 +96,7 @@ class ShopController {
     const data = request.all();
 
     /** do not allow user to update a shop from oher user */
-    if (auth.user.id !== shop.createdBy) {
+    if (auth.user.id !== shop.created_by) {
       return response.status(401);
     }
 
@@ -131,7 +118,7 @@ class ShopController {
     const copy = { ...shop };
 
     /** do not allow user to delete a shop from oher user */
-    if (auth.user.id !== shop.createdBy) {
+    if (auth.user.id !== shop.created_by) {
       return response.status(401);
     }
 

@@ -38,7 +38,7 @@ class RegisterController {
     const result = await User.create({
       ...data,
       provider: data.provider || "mail",
-      isActive: requiresAccountActivation ? false : true,
+      is_active: requiresAccountActivation ? false : true,
       confirmation_token
     });
     /** END - user creation */
@@ -69,7 +69,7 @@ class RegisterController {
       user: {
         name: data.name,
         email: data.email,
-        isActive: result.isActive
+        is_active: result.is_active
       },
       message: "user registered sucessfully"
     });
@@ -92,13 +92,13 @@ class RegisterController {
 
     // set confirmation to null and is_active to true
     user.confirmation_token = null;
-    user.isActive = true;
+    user.is_active = true;
 
     // persist user to database
     await user.save();
 
     response.status(200).json({
-      user: { name: user.name, email: user.email, isActive: user.isActive },
+      user: { name: user.name, email: user.email, is_active: user.is_active },
       message: "account confirmed successfully"
     });
 
