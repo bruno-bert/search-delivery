@@ -1,0 +1,27 @@
+{
+  "name": "delivery-feed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm-run-all -p dev:*",
+    "dev:register": "nodemon src/register.js",
+    "dev:queue": "nodemon src/queue.js",
+    "dev:express": "nodemon src/express.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.3",
+    "npm-run-all": "^4.1.5",
+    "sucrase": "^3.13.0"
+  },
+  "dependencies": {
+    "bull": "^3.13.0",
+    "bull-board": "^0.7.0",
+    "dotenv": "^8.2.0",
+    "edge.js": "^1.1.4",
+    "nodemailer": "^6.4.6"
+  }
+}

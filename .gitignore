@@ -44,6 +44,7 @@ build/Release
 functions/node_modules/
 adonis-backend/node_modules/
 delivery-jobs/node_modules/
+delivery-feed/node_modules/
 node_modules/
 jspm_packages/
 
@@ -70,5 +71,6 @@ typings/
 
 # dotenv environment variables file
 delivery-jobs/.env
+delivery-feed/.env
 adonis-backend/.env
 .env
