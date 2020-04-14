@@ -8,8 +8,16 @@ export default {
   //options,
   async handle({ data }) {
     const { jobData, mailData } = data;
-    console.log("job data", jobData);
+    
+
+    
+
+    
+    
+    
+    
     await Queue.add("SendMailToAdmin", { mailData });
+
     console.log(JOB_KEY + " - ran successfully");
   }
 };
