@@ -5,7 +5,7 @@
   "description": "Busca Delivery Backend",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "adonis serve",
     "test": "node ace test"
   },
   "keywords": [

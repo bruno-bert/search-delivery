@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  mongo:
+    container_name: my-mongo
+    restart: always
+    build: ./
+    ports:
+      - "27017:27017"
