@@ -7,7 +7,12 @@
     "dev": "npm-run-all -p dev:*",
     "dev:register": "nodemon src/register.js",
     "dev:queue": "nodemon src/queue.js",
-    "dev:express": "nodemon src/express.js"
+    "dev:express": "nodemon src/express.js",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start:queue": "node dist/queue.js",
+    "start:express": "node dist/express.js",
+    "start:register": "node dist/register.js",
+    "start": "npm-run-all -p start:*"
   },
   "keywords": [],
   "author": "",
