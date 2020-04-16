@@ -7,7 +7,8 @@
     "dev": "npm-run-all -p dev:*",
     "dev:queue": "nodemon src/queue.js",
     "dev:express": "nodemon src/express.js",
-    "build": "sucrase ./src -d ./dist --transforms imports",
+    "build:sucrase": "sucrase ./src -d ./dist --transforms imports",
+    "build": "rimraf dist && babel src -s -D -d ./dist --presets env",
     "start:queue": "node dist/queue.js",
     "start:express": "node dist/express.js",
     "start": "npm-run-all -p start:*"
@@ -16,8 +17,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
     "nodemon": "^2.0.3",
     "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
     "sucrase": "^3.13.0"
   },
   "dependencies": {

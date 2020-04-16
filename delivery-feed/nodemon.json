@@ -1,6 +1,4 @@
 {
-  "execMap": {
-    "js": "sucrase-node"
-  },
+  "exec": "babel-node src --presets=env",
   "ext": "js,json,env,edge"
 }
