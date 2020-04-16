@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  mongo:
+  database:
     container_name: my-mongo
     restart: always
     build: ./

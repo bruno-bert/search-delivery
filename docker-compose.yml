@@ -8,25 +8,34 @@ services:
     ports:
       - "3333:3333"
     links:
-      - mongo
+      - database
+      - redis
+    depends_on:
+      - database
       - redis
   job_feed:
-    container_name: job_feed
+    container_name: job-feed
     restart: always
     build: ./delivery-feed
     ports:
       - "3335:3335"
     links:
-      - mongo
+      - database
+      - redis
+    depends_on:
+      - database
       - redis
   job_mail:
-    container_name: job_mail
+    container_name: job-mail
     restart: always
     build: ./delivery-jobs
     ports:
       - "3334:3334"
     links:
-      - mongo
+      - database
+      - redis
+    depends_on:
+      - database
       - redis
   redis:
     container_name: redis
@@ -34,8 +43,8 @@ services:
     build: ./redis
     ports:
       - "6379:6379"
-  mongo:
-    container_name: my-mongo
+  database:
+    container_name: mongo
     restart: always
     build: ./mongo
     ports:
