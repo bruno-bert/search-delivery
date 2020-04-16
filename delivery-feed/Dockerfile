@@ -10,6 +10,9 @@ COPY . .
 
 RUN npm run build
 
+#copies the .edge templates that do not come with the build
+RUN cp -r src/views dist
+
 EXPOSE 3335
 
 CMD ["npm", "start"]

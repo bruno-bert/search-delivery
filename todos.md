@@ -1,5 +1,7 @@
 ### general
 
+- [ ] use babel instead of sucrase in production for building
+- [ ] create volume in docker to persist mongo even when container is destroyed
 - [ ] migrate mongo to cloud
 - [ ] migrate jobs and backend to cloud
 
@@ -9,7 +11,8 @@
 - [ ] implement logic to get data from google to raw table
 - [ ] implement logic to save data from raw table to shops table
 
-- [ ] on adonis backend implement filters to shops
+### Adonis BackEnd
+- [ ] Implement filters to shops
   - [ ] by CityId (one)
   - [ ] by segmentId (one)
   - [ ] by geoLocation (lat, lng)

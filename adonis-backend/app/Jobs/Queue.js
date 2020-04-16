@@ -13,7 +13,7 @@ const jobs = [
 ];
 
 const queues = jobs.map(job => ({
-  bull: new Queue(job.key, redisConfig),
+  bull: new Queue(job.key, `redis://${redisConfig.host}:${redisConfig.port}`),
   name: job.key,
   options: job.options
 }));

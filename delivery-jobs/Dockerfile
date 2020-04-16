@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:10
+FROM node:10
 
 WORKDIR /usr/src/app
 
@@ -9,6 +9,9 @@ RUN npm install
 COPY . .
 
 RUN npm run build
+
+#copies the .edge templates that do not come with the build
+RUN cp -r src/views dist
 
 EXPOSE 3334
 

@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  job_mail:
+    container_name: job-feed
+    restart: always
+    build: ./
+    ports:
+      - "3334:3334"
+    env_file: .env
