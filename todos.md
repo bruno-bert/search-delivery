@@ -1,7 +1,7 @@
 ### general
 
 - [x] use babel instead of sucrase in production for building
-- [ ] create volume in docker to persist mongo even when container is destroyed
+- [x] create volume in docker to persist mongo even when container is destroyed
 - [ ] migrate all projects to cloud
 - [ ] keep mongo to cloud
 - [ ] migrate jobs and backend to cloud

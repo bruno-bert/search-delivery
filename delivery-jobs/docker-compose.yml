@@ -1,13 +1,15 @@
 version: "3"
 
 services:
-  job_mail:
+  job-mail:
     container_name: job-mail
     restart: always
     build: ./
     ports:
       - "3334:3334"
     env_file: .env
+    volumes:
+      - .:/usr/src/app
     links:
       - redis
     depends_on:

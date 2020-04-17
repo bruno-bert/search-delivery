@@ -1,4 +1,6 @@
 {
-  "exec": "babel-node src --presets=env",
+  "execMap": {
+    "js": "babel-node --presets=env"
+  },
   "ext": "js,json,env,edge"
 }
