@@ -52,3 +52,7 @@ services:
     build: ./mongo
     ports:
       - "27017:27017"
+    volumes:
+      - delivery-mongo-db-data:/data/db
+volumes:
+  delivery-mongo-db-data:
