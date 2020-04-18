@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:10
+FROM node:10
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,7 @@ RUN npm install -g @adonisjs/cli
 
 EXPOSE 3333
 
-CMD ["npm", "start"]
+CMD ["adonis", "serve", "--dev"]
 
 
 

@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:10
+FROM node:10-alpine
 
 WORKDIR /usr/src/app
 
@@ -8,11 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
-
 EXPOSE 3335
 
-CMD ["npm", "start"]
-
-
-
+CMD ["npm", "run", "dev"] 
