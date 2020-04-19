@@ -1,0 +1,1 @@
+docker-compose -f docker-compose-nodb.yml up -d redis service-mail service-feed api

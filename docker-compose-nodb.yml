@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  api:
+    container_name: api
+    restart: always
+    build:
+      context: ./api
+    ports:
+      - "3333:3333"
+    links:
+      - redis
+    depends_on:
+      - redis
+    env_file: ./api/.env
+  service-feed:
+    container_name: service-feed
+    restart: always
+    build:
+      context: ./service-feed
+    ports:
+      - "3335:3335"
+    links:
+      - redis
+    depends_on:
+      - redis
+    env_file: ./service-feed/.env
+  service-mail:
+    container_name: service-mail
+    restart: always
+    build:
+      context: ./service-mail
+    ports:
+      - "3334:3334"
+    links:
+      - redis
+    depends_on:
+      - redis
+    env_file: ./service-mail/.env
+  redis:
+    container_name: redis
+    restart: always
+    build:
+      context: ./redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - delivery-redis-db-data:/data
+volumes:
+  delivery-redis-db-data:
