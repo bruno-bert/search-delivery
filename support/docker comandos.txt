@@ -8,6 +8,14 @@ foreach ($image in $images) { docker image rm $image -f }
 $containers = docker ps -a -q
 foreach ($container in $containers) { docker rm $container -f }
 
+unix:
+--remove containers
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+
+--remove _images
+docker rmi $(docker images -a -q)
+
 logar (s� exige a primeira vez):
 docker login / docker logout
 
