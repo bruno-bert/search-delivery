@@ -1,0 +1,1 @@
+ PUTTY.EXE -new_console -load "jazz-droplet"

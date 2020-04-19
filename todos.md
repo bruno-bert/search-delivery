@@ -2,9 +2,9 @@
 
 - [x] use babel instead of sucrase in production for building
 - [x] create volume in docker to persist mongo even when container is destroyed
-- [ ] migrate all projects to cloud
-- [ ] keep mongo to cloud
-- [ ] migrate jobs and backend to cloud
+- [x] migrate all projects to cloud
+- [x] keep mongo to cloud
+- [x] migrate jobs and backend to cloud
 
 ### Delivery feeds service
 

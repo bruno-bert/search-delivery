@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  redis:
+    container_name: redis
+    restart: always
+    build:
+      context: ./redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - delivery-redis-db-data:/data
+volumes:
+  delivery-redis-db-data:
