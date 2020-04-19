@@ -1,0 +1,2 @@
+-- grant permission to a directory
+sudo chmod a+rwx /srv
