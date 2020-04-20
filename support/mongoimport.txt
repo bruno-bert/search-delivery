@@ -1,1 +1,0 @@
-mongoimport --host localhost --port 27017 --username admin --password 12345 --authenticationDatabase delivery --collection states --db delivery --file C:\development\projects\jazz\jazz-front-end\support\estados.json --jsonArray

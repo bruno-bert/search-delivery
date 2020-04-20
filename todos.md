@@ -8,7 +8,7 @@
 
 ### Delivery feeds service
 
-- [ ] install lucid-mongo standalone
+- [ ] install mongoose
 - [ ] implement logic to get data from google to raw table
 - [ ] implement logic to save data from raw table to shops table
 

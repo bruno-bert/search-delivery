@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npm-run-all -p dev:*",
+    "dev": "npm-run-all -p dev:main*",
+    "dev:main": "nodemon src/index.js",
     "dev:register": "nodemon src/register.js",
     "dev:queue": "nodemon src/queue.js",
     "dev:express": "nodemon src/express.js",
@@ -19,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
@@ -28,10 +30,13 @@
     "sucrase": "^3.13.0"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "bull": "^3.13.0",
     "bull-board": "^0.7.0",
     "dotenv": "^8.2.0",
     "edge.js": "^1.1.4",
-    "nodemailer": "^6.4.6"
+    "mongoose": "^5.9.9",
+    "nodemailer": "^6.4.6",
+    "uuid": "^7.0.3"
   }
 }
