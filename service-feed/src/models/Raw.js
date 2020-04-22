@@ -5,7 +5,8 @@ const RawSchema = new mongoose.Schema(
   {
     place_id: {
       type: String
-    }
+    },
+    last_update: { type: Date, default: Date.now }
   },
   { strict: false }
 );

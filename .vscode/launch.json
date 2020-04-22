@@ -6,10 +6,11 @@
   "configurations": [
     {
       "type": "node",
-      "request": "launch",
+      "request": "attach",
+      "protocol": "inspector",
+      "restart": true,
       "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\adonis-backend\\server.js"
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

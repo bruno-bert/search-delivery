@@ -6,6 +6,24 @@ import google from "../config/google";
 const JOB_KEY = "GetDataFromGooglePlaces";
 //const options = { repeat: { cron: process.env.JOB_REPEAT_EXPRESSION } };
 
+import axios from "axios";
+
+const types = [
+  "restaurant",
+  "bakery",
+  "liquor_store",
+  "cafe",
+  "drugstore",
+  "grocery_or_supermarket",
+  "veterinary_care",
+  "supermarket",
+  "store",
+  "pharmacy",
+  "pet_store",
+  "meal_takeaway",
+  "meal_delivery"
+];
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -23,41 +41,53 @@ export default {
 
     const cities = await cityService.list();
 
-    //cities.forEach(city => {
-    const city = cities.filter(city => city.name === "Taubaté")[0];
+    console.log(`${cities.length} cities listed...`);
 
-    let filter = {};
-    let initFilter = {
-      lat: city.lat,
-      lng: city.lng,
-      radius: 20000,
-      type: "restaurant"
-    };
+    for (const city of cities) {
+      console.log(`Getting data from city : ${city.name} ...`);
 
-    do {
-      console.log("Getting data from Google Places API...");
+      let filter = {};
+      let initFilter = {
+        lat: city.lat,
+        lng: city.lng,
+        radius: 20000
+      };
+      let idx = 0;
 
-      filter = !page_token ? initFilter : { page_token };
-      googleData = await googleService.get(filter);
-      page_token = googleData.next_page_token;
+      for (const type of types) {
+        //adds the "type" to the filter
+        initFilter = { ...initFilter, type };
 
-      if (googleData.status === "INVALID_REQUEST") {
-        console.warn("Invalid request to google...");
-      } else {
-        let result = null;
-        googleData.results.forEach(async content => {
-          result = await rawService.create(content);
-          console.log(result);
-        });
+        console.log(`Received Todo ${idx + 1}:`);
+        idx += 1;
 
-        console.log(
-          `Waiting ${String(google.waitBetweenRequests / 1000)} seconds...`
-        );
-        await sleep(google.waitBetweenRequests);
+        do {
+          console.log(`Getting data from Google Places API...type: ${type}`);
+
+          filter = !page_token ? initFilter : { page_token };
+          googleData = await googleService.get(filter);
+          page_token = googleData.next_page_token;
+
+          if (googleData.results && googleData.results.length > 0) {
+            googleData.results.forEach(async content => {
+              await rawService.create(content);
+            });
+
+            console.log(
+              `Waiting ${String(google.waitBetweenRequests / 1000)} seconds...`
+            );
+
+            await sleep(google.waitBetweenRequests);
+          }
+        } while (page_token);
+
+        console.log(`Finished type ${type}`);
       }
-    } while (page_token);
 
-    // });
+      console.log(`Finished city ${city.name}`);
+    }
+
+    console.log("Finished!");
 
     if (jobData.sendMailToAdmin)
       await Queue.add("SendMailToAdmin", { mailData });

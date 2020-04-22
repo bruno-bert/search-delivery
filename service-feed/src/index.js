@@ -1,5 +1,6 @@
 import "dotenv/config";
-import { GetDataFromGooglePlaces } from "./jobs";
+//import { GetDataFromGooglePlaces } from "./jobs";
+import { GetDetailDataFromGooglePlaces } from "./jobs";
 
 import { database } from "./lib/Database";
 
@@ -10,7 +11,11 @@ const run = async () => {
     data: { jobData: { sendMailToAdmin: false }, mailData: {} }
   });
 
-  database.disconnect();
+  await GetDetailDataFromGooglePlaces.handle({
+    data: { jobData: { sendMailToAdmin: false }, mailData: {} }
+  });
+
+  //database.disconnect();
 };
 
 run();

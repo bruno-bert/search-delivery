@@ -1,0 +1,6 @@
+{
+  "execMap": {
+    "js": "node --inspect -r sucrase/register"
+  },
+  "ext": "js,json,env,edge"
+}
