@@ -1,5 +1,5 @@
 import "dotenv/config";
-//import { GetDataFromGooglePlaces } from "./jobs";
+import { GetDataFromGooglePlaces } from "./jobs";
 import { GetDetailDataFromGooglePlaces } from "./jobs";
 
 import { database } from "./lib/Database";

@@ -1,7 +1,7 @@
 /** create user */
 db.createUser({
-  user: "admin",
-  pwd: "12345",
+  user: "jazzcoreteam-admin",
+  pwd: "icwsig89",
   roles: [
     { role: "readWrite", db: "delivery" },
     { role: "dbAdmin", db: "delivery" }
@@ -23,3 +23,4 @@ db.users.createIndex({ email: 1 }, { name: "email_index", unique: true });
 db.tokens.createIndex({ token: 1 }, { name: "token_index", unique: true });
 db.shops.createIndex({ location: "2dsphere" }, { name: "geo_index" });
 db.raws.createIndex({ place_id: 1 }, { name: "place_id_index", unique: true });
+db.raws.createIndex( { name: "text" } )
