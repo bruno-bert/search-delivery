@@ -39,6 +39,7 @@
     "edge.js": "^1.1.4",
     "mongoose": "^5.9.9",
     "nodemailer": "^6.4.6",
+    "puppeteer": "^3.0.1",
     "uuid": "^7.0.3"
   }
 }

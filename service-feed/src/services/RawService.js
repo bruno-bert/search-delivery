@@ -2,14 +2,15 @@ import Raw from "../models/Raw";
 
 export default class RawService {
   async getValid() {
+    /*
     let filter = {
       requestedToDelete: false,
       notDelivery: false,
       badService: false
-      //$text: { $search: "Marcilene" }
-    };
+    };*/
 
-    //const docs = await Raw.find({ $text: { $search: "Marcilene" } }).lean();
+    let filter = { requestedToDelete: false };
+
     const docs = await Raw.find(filter).lean();
     return docs;
   }
