@@ -30,7 +30,7 @@
     "bull-board": "^0.7.0",
     "dotenv": "^8.2.0",
     "edge.js": "^1.1.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "nodemailer": "^6.4.6"
   }
 }
